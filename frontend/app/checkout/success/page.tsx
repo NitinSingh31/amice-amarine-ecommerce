@@ -13,13 +13,14 @@ import {
   ShieldCheck,
   Clock,
   Sparkles,
+  Search,
 } from 'lucide-react';
 
 function SuccessContent() {
   const searchParams = useSearchParams();
-  const orderNumber = searchParams.get('orderNumber') || 'AA-2026-9901';
+  const orderNumber = searchParams.get('orderNumber') || 'AA-2026-5729';
   const method = searchParams.get('method') || 'razorpay';
-  const total = Number(searchParams.get('total')) || 2598;
+  const total = Number(searchParams.get('total')) || 3057;
 
   const today = new Date();
   const deliveryDate = new Date();
@@ -61,7 +62,7 @@ function SuccessContent() {
             </p>
           </div>
           <span className="text-[10px] font-mono uppercase bg-surface-subtle border border-surface-border px-2 py-1 text-zinc-300">
-            {method === 'cod' ? 'CASH ON DELIVERY' : 'PREPAID ONLINE'}
+            {method === 'cod' ? 'CASH ON DELIVERY' : 'PREPAID ONLINE (RAZORPAY)'}
           </span>
         </div>
 
@@ -88,7 +89,7 @@ function SuccessContent() {
               3
             </div>
             <span className="text-[10px] uppercase block text-zinc-400">Shipped</span>
-            <span className="text-[9px] text-zinc-500">Bluedart</span>
+            <span className="text-[9px] text-zinc-500">Delhivery</span>
           </div>
 
           <div className="space-y-1 opacity-50">
@@ -103,16 +104,21 @@ function SuccessContent() {
         {/* What to expect box */}
         <div className="p-4 bg-surface-subtle border border-surface-border text-xs font-mono text-zinc-400 space-y-1 leading-relaxed">
           <p className="text-white font-bold uppercase">WHAT HAPPENS NEXT?</p>
-          <p>• A confirmation receipt has been sent to your email with your invoice details.</p>
+          <p>• A confirmation receipt has been sent to your email with your tax invoice details.</p>
           <p>• Once your streetwear items are inspected and packed, you will receive courier SMS tracking updates.</p>
           <p>• Need to adjust your size? 7-day hassle-free exchanges are available upon delivery.</p>
         </div>
 
         {/* Action Buttons */}
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link href={'/tracking?order=' + orderNumber} className="w-full sm:w-auto">
+            <Button variant="glow" size="md" className="w-full gap-2">
+              <Search className="w-4 h-4" /> TRACK SHIPMENT LIVE
+            </Button>
+          </Link>
           <Link href="/account" className="w-full sm:w-auto">
-            <Button variant="glow" size="md" className="w-full">
-              VIEW MY ORDERS <ArrowRight className="w-4 h-4 ml-1" />
+            <Button variant="outline" size="md" className="w-full">
+              MY ORDERS ARCHIVE
             </Button>
           </Link>
           <Link href="/collections/all-products" className="w-full sm:w-auto">

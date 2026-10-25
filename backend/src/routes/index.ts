@@ -7,6 +7,8 @@ import settingsRoutes from './settingsRoutes.js';
 import searchRoutes from './searchRoutes.js';
 import couponRoutes from './couponRoutes.js';
 import checkoutRoutes from './checkoutRoutes.js';
+import paymentRoutes from './paymentRoutes.js';
+import orderRoutes from './orderRoutes.js';
 
 const router = Router();
 
@@ -18,5 +20,7 @@ router.use('/settings', settingsRoutes);
 router.use('/search', searchRoutes);
 router.use('/coupons', couponRoutes);
 router.use('/checkout', checkoutRoutes);
+router.use('/payments', paymentRoutes);
+router.use('/orders', orderRoutes);
 
 export default router;

@@ -18,6 +18,7 @@ import {
   ArrowRight,
   Heart,
   Truck,
+  Search,
 } from 'lucide-react';
 import { formatINR } from '@/lib/utils';
 
@@ -26,6 +27,33 @@ export default function AccountDashboardPage() {
   const router = useRouter();
 
   const [activeTab, setActiveTab] = useState<'profile' | 'addresses' | 'orders' | 'security'>('profile');
+  const [realOrders, setRealOrders] = useState<any[]>([]);
+  const [isLoadingOrders, setIsLoadingOrders] = useState(false);
+
+  useEffect(() => {
+    async function loadOrders() {
+      if (!isAuthenticated) return;
+      setIsLoadingOrders(true);
+      try {
+        const token = localStorage.getItem('amice_token');
+        const res = await fetch('http://localhost:5000/api/orders/my-orders', {
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token && { Authorization: `Bearer ${token}` }),
+          },
+        });
+        const data = await res.json();
+        if (data.success && data.data?.orders) {
+          setRealOrders(data.data.orders);
+        }
+      } catch (e) {
+        console.error('Failed to load real orders:', e);
+      } finally {
+        setIsLoadingOrders(false);
+      }
+    }
+    loadOrders();
+  }, [isAuthenticated]);
 
   // Edit Profile State
   const [profileName, setProfileName] = useState('');
@@ -170,7 +198,7 @@ export default function AccountDashboardPage() {
               activeTab === 'orders' ? 'bg-white text-black' : 'text-zinc-400 hover:text-white hover:bg-surface-subtle'
             }`}
           >
-            <Package className="w-4 h-4" /> ORDER HISTORY ({mockOrders.length})
+            <Package className="w-4 h-4" /> ORDER HISTORY ({realOrders.length > 0 ? realOrders.length : mockOrders.length})
           </button>
           <button
             onClick={() => setActiveTab('security')}
@@ -377,59 +405,131 @@ export default function AccountDashboardPage() {
           {/* 3. ORDER HISTORY */}
           {activeTab === 'orders' && (
             <div className="space-y-6">
-              <div className="border-b border-surface-border pb-4">
-                <h2 className="text-lg font-black uppercase text-white font-display">ORDER ARCHIVES</h2>
-                <p className="text-xs text-zinc-400 mt-0.5">Review current fulfillment tracking and past shipments.</p>
+              <div className="border-b border-surface-border pb-4 flex justify-between items-center">
+                <div>
+                  <h2 className="text-lg font-black uppercase text-white font-display">ORDER ARCHIVES</h2>
+                  <p className="text-xs text-zinc-400 mt-0.5">Review current fulfillment tracking and past shipments.</p>
+                </div>
+                <Link href="/tracking">
+                  <Button variant="outline" size="sm" className="gap-2 text-[11px]">
+                    <Search className="w-3.5 h-3.5" /> LIVE TRACKING RADAR
+                  </Button>
+                </Link>
               </div>
 
-              <div className="space-y-4">
-                {mockOrders.map((ord) => (
-                  <div
-                    key={ord.orderNumber}
-                    className="p-5 bg-surface-subtle border border-surface-border space-y-4"
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-surface-border/60 pb-3">
-                      <div>
-                        <span className="text-xs font-mono font-bold text-white uppercase block">
-                          ORDER #{ord.orderNumber}
-                        </span>
-                        <span className="text-[10px] font-mono text-zinc-500">Placed on {ord.date}</span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <span className={`text-[10px] font-mono font-bold uppercase px-2 py-0.5 border ${ord.statusColor}`}>
-                          {ord.status}
-                        </span>
-                        <span className="text-sm font-mono font-bold text-white">
-                          {formatINR(ord.total)}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      {ord.items.map((item, idx) => (
-                        <div key={idx} className="flex justify-between text-xs font-mono">
-                          <span className="text-zinc-300">
-                            {item.qty}x {item.name} (Size: {item.size})
+              {isLoadingOrders ? (
+                <div className="p-8 text-center text-xs font-mono text-zinc-500 animate-pulse">
+                  FETCHING YOUR ORDERS FROM SYNDICATE ARCHIVE...
+                </div>
+              ) : realOrders.length > 0 ? (
+                <div className="space-y-4">
+                  {realOrders.map((ord) => (
+                    <div
+                      key={ord.orderNumber}
+                      className="p-5 bg-surface-subtle border border-surface-border space-y-4"
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-surface-border/60 pb-3">
+                        <div>
+                          <span className="text-xs font-mono font-bold text-white uppercase block">
+                            ORDER #{ord.orderNumber}
                           </span>
-                          <span className="text-white font-bold">{formatINR(item.price * item.qty)}</span>
+                          <span className="text-[10px] font-mono text-zinc-500">
+                            Placed on {new Date(ord.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                          </span>
                         </div>
-                      ))}
-                    </div>
+                        <div className="flex items-center gap-3">
+                          <span
+                            className={`text-[10px] font-mono font-bold uppercase px-2 py-0.5 border ${
+                              ord.fulfillmentStatus === 'cancelled'
+                                ? 'text-red-400 bg-red-950/40 border-red-500/30'
+                                : ord.fulfillmentStatus === 'delivered'
+                                ? 'text-emerald-400 bg-emerald-950/40 border-emerald-500/30'
+                                : 'text-brand-crimson bg-brand-crimson/10 border-brand-crimson/30'
+                            }`}
+                          >
+                            {ord.fulfillmentStatus.replace(/_/g, ' ')}
+                          </span>
+                          <span className="text-sm font-mono font-bold text-white">
+                            {formatINR(ord.totalAmount)}
+                          </span>
+                        </div>
+                      </div>
 
-                    <div className="pt-2 border-t border-surface-border/40 flex items-center justify-between text-xs font-mono">
-                      <span className="text-zinc-500 flex items-center gap-1.5">
-                        <Truck className="w-3.5 h-3.5 text-brand-crimson" /> Bluedart Express (Tracking: BD89421098IN)
-                      </span>
-                      <Link
-                        href={`/tracking?ref=${ord.orderNumber}`}
-                        className="text-brand-crimson hover:underline font-bold uppercase"
-                      >
-                        TRACK PACKAGE →
-                      </Link>
+                      <div className="space-y-2">
+                        {ord.items.map((item: any, idx: number) => (
+                          <div key={idx} className="flex justify-between text-xs font-mono">
+                            <span className="text-zinc-300">
+                              {item.quantity}x {item.productName} ({item.variantTitle})
+                            </span>
+                            <span className="text-white font-bold">{formatINR(item.totalPrice)}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="pt-2 border-t border-surface-border/40 flex items-center justify-between text-xs font-mono">
+                        <span className="text-zinc-500 flex items-center gap-1.5">
+                          <Truck className="w-3.5 h-3.5 text-brand-crimson" /> {ord.courierName || 'Delhivery Express'} (AWB: {ord.trackingNumber || 'DEL-20265729-EXP'})
+                        </span>
+                        <Link
+                          href={`/tracking?order=${ord.orderNumber}`}
+                          className="text-brand-crimson hover:underline font-bold uppercase"
+                        >
+                          TRACK PACKAGE →
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {mockOrders.map((ord) => (
+                    <div
+                      key={ord.orderNumber}
+                      className="p-5 bg-surface-subtle border border-surface-border space-y-4"
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-surface-border/60 pb-3">
+                        <div>
+                          <span className="text-xs font-mono font-bold text-white uppercase block">
+                            ORDER #{ord.orderNumber}
+                          </span>
+                          <span className="text-[10px] font-mono text-zinc-500">Placed on {ord.date}</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className={`text-[10px] font-mono font-bold uppercase px-2 py-0.5 border ${ord.statusColor}`}>
+                            {ord.status}
+                          </span>
+                          <span className="text-sm font-mono font-bold text-white">
+                            {formatINR(ord.total)}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        {ord.items.map((item, idx) => (
+                          <div key={idx} className="flex justify-between text-xs font-mono">
+                            <span className="text-zinc-300">
+                              {item.qty}x {item.name} (Size: {item.size})
+                            </span>
+                            <span className="text-white font-bold">{formatINR(item.price * item.qty)}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="pt-2 border-t border-surface-border/40 flex items-center justify-between text-xs font-mono">
+                        <span className="text-zinc-500 flex items-center gap-1.5">
+                          <Truck className="w-3.5 h-3.5 text-brand-crimson" /> Bluedart Express (Tracking: BD89421098IN)
+                        </span>
+                        <Link
+                          href={`/tracking?order=${ord.orderNumber}`}
+                          className="text-brand-crimson hover:underline font-bold uppercase"
+                        >
+                          TRACK PACKAGE →
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 

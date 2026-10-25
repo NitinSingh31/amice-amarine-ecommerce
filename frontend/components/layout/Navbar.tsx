@@ -33,6 +33,7 @@ export const Navbar: React.FC = () => {
     { label: 'JACKETS', href: '/collections/jackets' },
     { label: 'BOTTOMS', href: '/collections/bottoms' },
     { label: 'ACCESSORIES', href: '/collections/accessories' },
+    { label: 'TRACK ORDER', href: '/tracking' },
   ];
 
   return (
