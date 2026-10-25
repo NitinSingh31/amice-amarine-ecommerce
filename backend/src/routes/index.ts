@@ -5,6 +5,8 @@ import categoryRoutes from './categoryRoutes.js';
 import productRoutes from './productRoutes.js';
 import settingsRoutes from './settingsRoutes.js';
 import searchRoutes from './searchRoutes.js';
+import couponRoutes from './couponRoutes.js';
+import checkoutRoutes from './checkoutRoutes.js';
 
 const router = Router();
 
@@ -14,5 +16,7 @@ router.use('/categories', categoryRoutes);
 router.use('/products', productRoutes);
 router.use('/settings', settingsRoutes);
 router.use('/search', searchRoutes);
+router.use('/coupons', couponRoutes);
+router.use('/checkout', checkoutRoutes);
 
 export default router;
