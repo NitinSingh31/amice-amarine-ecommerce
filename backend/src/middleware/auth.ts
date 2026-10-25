@@ -60,3 +60,16 @@ export function optionalAuthenticate(req: AuthenticatedRequest, res: Response, n
   }
   next();
 }
+
+export function authorize(...allowedRoles: string[]) {
+  return (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
+    if (!req.user) {
+      return next(new AppError('Authentication required to access admin resources.', 401, 'UNAUTHORIZED'));
+    }
+    const permitted = allowedRoles.length > 0 ? allowedRoles : ['super_admin', 'manager', 'order_manager'];
+    if (!permitted.includes(req.user.role)) {
+      return next(new AppError('Access forbidden. You lack the administrative clearance required for this operation.', 403, 'FORBIDDEN'));
+    }
+    next();
+  };
+}
