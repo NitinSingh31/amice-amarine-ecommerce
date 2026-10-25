@@ -23,7 +23,14 @@ const envSchema = z.object({
   STORE_COD_FEE: z.string().default('50').transform((v) => parseInt(v, 10)),
 });
 
-const parsed = envSchema.safeParse(process.env);
+// Support both MONGO_URI and MONGODB_URI, and CLIENT_URL and FRONTEND_URL
+const normalizedEnv = {
+  ...process.env,
+  MONGODB_URI: process.env.MONGODB_URI || process.env.MONGO_URI || process.env.DATABASE_URL || 'mongodb://127.0.0.1:27017/amice_amarine',
+  FRONTEND_URL: process.env.FRONTEND_URL || process.env.CLIENT_URL || 'http://localhost:3000',
+};
+
+const parsed = envSchema.safeParse(normalizedEnv);
 
 if (!parsed.success) {
   console.error('Invalid environment variables:', parsed.error.format());
