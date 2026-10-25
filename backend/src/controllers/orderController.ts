@@ -16,7 +16,7 @@ export async function trackOrder(req: Request, res: Response, next: NextFunction
     }
 
     const order = await Order.findOne({
-      orderNumber: { $regex: new RegExp(`^${orderNumber.trim()}$`, 'i') },
+      orderNumber: { $regex: new RegExp(`^${String(orderNumber).trim()}$`, 'i') },
     });
 
     if (!order) {
@@ -148,7 +148,7 @@ export async function getOrderByNumber(req: Request, res: Response, next: NextFu
   try {
     const { orderNumber } = req.params;
     const order = await Order.findOne({
-      orderNumber: { $regex: new RegExp(`^${orderNumber.trim()}$`, 'i') },
+      orderNumber: { $regex: new RegExp(`^${String(orderNumber).trim()}$`, 'i') },
     });
 
     if (!order) {
@@ -167,7 +167,7 @@ export async function cancelOrder(req: AuthenticatedRequest, res: Response, next
     const { reason = 'Cancelled by customer' } = req.body;
 
     const order = await Order.findOne({
-      orderNumber: { $regex: new RegExp(`^${orderNumber.trim()}$`, 'i') },
+      orderNumber: { $regex: new RegExp(`^${String(orderNumber).trim()}$`, 'i') },
     });
 
     if (!order) {
@@ -215,7 +215,7 @@ export async function getOrderInvoice(req: Request, res: Response, next: NextFun
   try {
     const { orderNumber } = req.params;
     const order = await Order.findOne({
-      orderNumber: { $regex: new RegExp(`^${orderNumber.trim()}$`, 'i') },
+      orderNumber: { $regex: new RegExp(`^${String(orderNumber).trim()}$`, 'i') },
     });
 
     if (!order) {

@@ -102,7 +102,7 @@ export async function getAdminProducts(req: Request, res: Response, next: NextFu
         compareAtPrice: prod.compareAtPrice,
         category: prod.category,
         tags: prod.tags,
-        fit: prod.fit,
+        fit: (prod as any).fit || 'Oversized Boxy Fit',
         images: prod.images,
         status: prod.status,
         variantsCount: prod.variants.length,
@@ -256,7 +256,7 @@ export async function updateAdminOrderStatus(req: AuthenticatedRequest, res: Res
     }
 
     const order = await Order.findOne({
-      orderNumber: { $regex: new RegExp(`^${orderNumber.trim()}$`, 'i') },
+      orderNumber: { $regex: new RegExp(`^${String(orderNumber).trim()}$`, 'i') },
     });
 
     if (!order) {
