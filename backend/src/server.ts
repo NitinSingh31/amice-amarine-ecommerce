@@ -46,6 +46,107 @@ app.use('/uploads', express.static(uploadsPath));
 // Global Rate Limiting
 app.use('/api', globalLimiter);
 
+// Root Status Landing Page
+app.get('/', (req, res) => {
+  res.status(200).send(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amice Amarine API // System Operational</title>
+  <style>
+    body {
+      background: #09090b;
+      color: #fafafa;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .card {
+      background: #18181b;
+      border: 1px solid #27272a;
+      padding: 36px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 0 50px rgba(255, 0, 85, 0.15);
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #10b981;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    p {
+      color: #a1a1aa;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0 0 24px 0;
+    }
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    a.btn {
+      display: block;
+      text-align: center;
+      padding: 12px 18px;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    a.primary {
+      background: #ff0055;
+      color: #fff;
+    }
+    a.primary:hover {
+      background: #e6004c;
+    }
+    a.secondary {
+      background: #27272a;
+      color: #fafafa;
+    }
+    a.secondary:hover {
+      background: #3f3f46;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="badge">● Core API Online</div>
+    <h1>Amice Amarine Engine</h1>
+    <p>This is the production backend REST API connected to MongoDB Atlas & Cloudinary CDN. The visual customer storefront is hosted live on Vercel.</p>
+    <div class="links">
+      <a href="https://frontend-ten-zeta-4fq178colr.vercel.app" class="btn primary" target="_blank">Open Live Storefront →</a>
+      <a href="/api/health" class="btn secondary">View System Health Status</a>
+      <a href="/api/products" class="btn secondary">View Product Catalog JSON</a>
+    </div>
+  </div>
+</body>
+</html>`);
+});
+
 // API Routes
 app.use('/api', routes);
 
