@@ -126,3 +126,22 @@ export async function getProductBySlug(slug: string) {
     };
   }
 }
+
+export async function uploadImage(file: File, folder = 'amice-amarine/products'): Promise<{ secure_url: string; public_id: string }> {
+  const formData = new FormData();
+  formData.append('image', file);
+  formData.append('folder', folder);
+
+  const res = await fetch(`${API_BASE}/upload/image`, {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData?.error?.message || 'Failed to upload image to Cloudinary');
+  }
+
+  const json = await res.json();
+  return json.data;
+}

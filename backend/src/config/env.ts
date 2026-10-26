@@ -21,6 +21,10 @@ const envSchema = z.object({
   STORE_STANDARD_SHIPPING_FEE: z.string().default('99').transform((v) => parseInt(v, 10)),
   STORE_COD_ENABLED: z.string().default('true').transform((v) => v === 'true'),
   STORE_COD_FEE: z.string().default('50').transform((v) => parseInt(v, 10)),
+  CLOUDINARY_CLOUD_NAME: z.string().default('dobqwvddb'),
+  CLOUDINARY_API_KEY: z.string().default('537941754467769'),
+  CLOUDINARY_API_SECRET: z.string().default('-VQS9Y5-iimjvAVzxHM5F12PRE0'),
+  CLOUDINARY_URL: z.string().optional(),
 });
 
 // Support both MONGO_URI and MONGODB_URI, and CLIENT_URL and FRONTEND_URL

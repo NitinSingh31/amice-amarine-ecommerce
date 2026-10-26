@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { formatINR } from '@/lib/utils';
+import { uploadImage } from '@/lib/api';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import {
@@ -32,6 +33,8 @@ import {
   Eye,
   Check,
   X,
+  UploadCloud,
+  Loader2,
 } from 'lucide-react';
 
 export default function AdminDashboardPage() {
@@ -57,6 +60,24 @@ export default function AdminDashboardPage() {
 
   // Modals & Forms
   const [isNewProductModalOpen, setIsNewProductModalOpen] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadError, setUploadError] = useState('');
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingImage(true);
+    setUploadError('');
+    try {
+      const res = await uploadImage(file, 'amice-amarine/products');
+      setNewProduct((prev) => ({ ...prev, images: res.secure_url }));
+    } catch (err: any) {
+      setUploadError(err.message || 'Image upload failed');
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
   const [newProduct, setNewProduct] = useState({
     name: '',
     category: 'oversized-t-shirts',
@@ -1009,12 +1030,63 @@ export default function AdminDashboardPage() {
               </select>
             </div>
 
-            <Input
-              label="PRIMARY IMAGE URL"
-              value={newProduct.images}
-              onChange={(e) => setNewProduct({ ...newProduct, images: e.target.value })}
-              required
-            />
+            <div className="space-y-2">
+              <label className="text-[10px] text-zinc-400 uppercase font-bold flex items-center justify-between">
+                <span>PRIMARY PRODUCT IMAGE (CLOUDINARY CDN)</span>
+                {uploadingImage && <span className="text-brand-crimson animate-pulse text-[9px]">UPLOADING...</span>}
+              </label>
+
+              <div className="flex gap-3 items-center">
+                <div className="w-16 h-20 bg-zinc-900 border border-surface-border flex items-center justify-center overflow-hidden shrink-0 relative group">
+                  {newProduct.images ? (
+                    <img src={newProduct.images} alt="Preview" className="w-full h-full object-cover" />
+                  ) : (
+                    <UploadCloud className="w-6 h-6 text-zinc-600" />
+                  )}
+                </div>
+
+                <div className="flex-1 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <label className="cursor-pointer inline-flex items-center gap-2 bg-surface-subtle hover:bg-surface-border text-xs px-3 py-2 border border-surface-border text-white transition-all font-mono">
+                      {uploadingImage ? (
+                        <>
+                          <Loader2 className="w-3.5 h-3.5 animate-spin text-brand-crimson" />
+                          <span>UPLOADING TO CDN...</span>
+                        </>
+                      ) : (
+                        <>
+                          <UploadCloud className="w-3.5 h-3.5 text-brand-crimson" />
+                          <span>CHOOSE IMAGE FILE</span>
+                        </>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleFileUpload}
+                        disabled={uploadingImage}
+                      />
+                    </label>
+                    {newProduct.images && (
+                      <span className="text-[10px] text-emerald-400 font-mono flex items-center gap-1">
+                        <Check className="w-3 h-3" /> Ready
+                      </span>
+                    )}
+                  </div>
+
+                  {uploadError && (
+                    <p className="text-[10px] text-rose-400">{uploadError}</p>
+                  )}
+
+                  <Input
+                    placeholder="Or paste Cloudinary / image URL"
+                    value={newProduct.images}
+                    onChange={(e) => setNewProduct({ ...newProduct, images: e.target.value })}
+                    required
+                  />
+                </div>
+              </div>
+            </div>
 
             <div className="space-y-2 pt-2 border-t border-surface-border">
               <span className="text-[10px] text-zinc-400 uppercase font-bold block">INITIAL SIZE STOCK:</span>
