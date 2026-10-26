@@ -6,7 +6,7 @@ import { Suspense } from 'react';
 import { Product } from '@/types';
 import { ArrowLeft } from 'lucide-react';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 interface CollectionPageProps {
   params: {

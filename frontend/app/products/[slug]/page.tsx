@@ -5,7 +5,7 @@ import { ProductCard } from '@/components/product/ProductCard';
 import { ProductDetailsClient } from '@/components/product/ProductDetailsClient';
 import { ArrowLeft } from 'lucide-react';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 interface ProductPageProps {
   params: {

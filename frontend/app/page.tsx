@@ -5,7 +5,7 @@ import { ProductCard } from '@/components/product/ProductCard';
 import { Button } from '@/components/ui/Button';
 import { ArrowRight, Flame, Star, ShieldCheck, Sparkles, Instagram } from 'lucide-react';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export default async function HomePage() {
   const [settingsData, categoriesData, newArrivalsData, featuredData] = await Promise.all([
