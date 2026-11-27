@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Search, ShoppingBag, Heart, User, Menu, X, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useCart } from '@/context/CartContext';
@@ -59,15 +60,19 @@ export const Navbar: React.FC = () => {
               </button>
             </div>
 
-            {/* Brand Logo Wordmark */}
+            {/* Brand Logo */}
             <div className="flex-1 lg:flex-none flex justify-center lg:justify-start">
-              <Link href="/" className="group flex flex-col items-center lg:items-start">
-                <span className="text-xl sm:text-2xl font-black tracking-[0.2em] uppercase text-sage-900 group-hover:text-terracotta-600 transition-colors font-serif">
-                  AMICE AMARINE
-                </span>
-                <span className="text-[9px] tracking-[0.35em] uppercase text-sage-500 font-sans -mt-0.5 group-hover:text-sage-700 transition-colors">
-                  ANIME X STREETWEAR
-                </span>
+              <Link href="/" className="group flex items-center py-1" aria-label="Amice Amarine Home">
+                <div className="relative h-12 w-28 sm:h-14 sm:w-36 flex items-center justify-center">
+                  <Image
+                    src="/images/logo.jpg"
+                    alt="Amice Amarine Logo"
+                    fill
+                    priority
+                    sizes="(max-width: 640px) 112px, 144px"
+                    className="object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
               </Link>
             </div>
 
@@ -198,6 +203,15 @@ export const Navbar: React.FC = () => {
       {isMobileMenuOpen && (
         <div className="fixed inset-0 top-16 z-50 bg-linen-50/98 backdrop-blur-xl border-t border-sage-200 lg:hidden flex flex-col justify-between p-6 overflow-y-auto animate-in slide-in-from-left duration-200">
           <div className="space-y-6">
+            <div className="relative h-12 w-28 -ml-1">
+              <Image
+                src="/images/logo.jpg"
+                alt="Amice Amarine Logo"
+                fill
+                sizes="112px"
+                className="object-contain object-left mix-blend-multiply"
+              />
+            </div>
             <div className="text-[10px] uppercase font-semibold tracking-wider text-sage-500">
               EXPLORE COLLECTIONS
             </div>

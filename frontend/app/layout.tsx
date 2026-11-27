@@ -28,6 +28,11 @@ export const metadata: Metadata = {
     default: 'AMICE AMARINE // PREMIUM ANIME STREETWEAR',
     template: '%s | AMICE AMARINE',
   },
+  icons: {
+    icon: '/images/logo.jpg',
+    shortcut: '/images/logo.jpg',
+    apple: '/images/logo.jpg',
+  },
   description:
     'Premium anime-inspired streetwear fashion brand. Luxury 280-320 GSM oversized T-shirts, heavy fleece hoodies, tactical bomber jackets, and accessories designed for raw underground street culture.',
   keywords: [
@@ -93,7 +98,7 @@ export default function RootLayout({
     '@type': 'OnlineStore',
     name: 'Amice Amarine',
     url: siteUrl,
-    logo: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=400&auto=format&fit=crop',
+    logo: `${siteUrl}/images/logo.jpg`,
     description: 'Premium anime-inspired streetwear fashion brand. Oversized T-Shirts, Heavyweight Hoodies & Tactical Jackets.',
     telephone: '+91 91234 56789',
     email: 'syndicate@amiceamarine.com',
