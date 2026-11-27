@@ -43,7 +43,7 @@ const StoreSettingsSchema = new Schema<IStoreSettings>(
     },
     heroBanner: {
       headline: { type: String, default: 'AMICE AMARINE' },
-      subheadline: { type: String, default: 'Heavyweight 280 GSM Cotton. Raw Tokyo Cyberpunk Aesthetics. Oversized Precision.' },
+      subheadline: { type: String, default: '' },
       ctaText: { type: String, default: 'SHOP THE DROP' },
       ctaLink: { type: String, default: '/collections/all-products' },
       backgroundImage: { type: String, default: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1600&auto=format&fit=crop' },

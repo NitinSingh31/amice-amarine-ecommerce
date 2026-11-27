@@ -24,7 +24,7 @@ async function seedDatabase(): Promise<void> {
       },
       heroBanner: {
         headline: 'AMICE AMARINE',
-        subheadline: 'Heavyweight 280 GSM Cotton. Cyberpunk raw aesthetics. Engineered for the oversized lifestyle.',
+        subheadline: '',
         ctaText: 'EXPLORE THE DROP',
         ctaLink: '/collections/all-products',
         backgroundImage: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1600&auto=format&fit=crop',

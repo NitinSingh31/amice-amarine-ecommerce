@@ -73,9 +73,13 @@ export default async function HomePage() {
               .trim() || 'AMICE AMARINE'}
           </h1>
 
-          <p className="max-w-2xl mx-auto text-sm sm:text-base md:text-lg text-sage-700 font-normal leading-relaxed">
-            {settings?.heroBanner?.subheadline || 'Heavyweight 280–320 GSM French Terry. Tailored silhouettes. Refined Japanese editorial aesthetics.'}
-          </p>
+          {settings?.heroBanner?.subheadline &&
+            !settings.heroBanner.subheadline.includes('Raw Tokyo Cyberpunk') &&
+            !settings.heroBanner.subheadline.includes('Heavyweight 280') && (
+              <p className="max-w-2xl mx-auto text-sm sm:text-base md:text-lg text-sage-700 font-normal leading-relaxed">
+                {settings.heroBanner.subheadline}
+              </p>
+            )}
 
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
             <Link href={settings?.heroBanner?.ctaLink || '/collections/all-products'}>

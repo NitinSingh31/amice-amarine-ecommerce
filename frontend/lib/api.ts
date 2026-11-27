@@ -44,7 +44,7 @@ export async function getPublicSettings() {
         },
         heroBanner: {
           headline: 'AMICE AMARINE',
-          subheadline: 'Heavyweight 280 GSM Cotton. Raw Tokyo Cyberpunk Aesthetics. Oversized Precision.',
+          subheadline: '',
           ctaText: 'SHOP THE DROP',
           ctaLink: '/collections/all-products',
           backgroundImage: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1600',
