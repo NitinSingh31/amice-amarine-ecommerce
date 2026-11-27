@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Playfair_Display, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
 import { Navbar } from '@/components/layout/Navbar';
@@ -6,6 +7,18 @@ import { Footer } from '@/components/layout/Footer';
 import { CartProvider } from '@/context/CartContext';
 import { AuthProvider } from '@/context/AuthContext';
 import { CartDrawer } from '@/components/cart/CartDrawer';
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair',
+  display: 'swap',
+});
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-jakarta',
+  display: 'swap',
+});
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://amiceamarine.com';
 
@@ -98,14 +111,14 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className={`${playfair.variable} ${plusJakarta.variable}`}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-background text-brand-white">
+      <body className="min-h-screen flex flex-col bg-background text-sage-900 font-sans selection:bg-terracotta-100 selection:text-terracotta-700">
         <AuthProvider>
           <CartProvider>
             <AnnouncementBar />

@@ -109,7 +109,7 @@
 | Role | Email | Password | Permissions |
 |---|---|---|---|
 | **Super Admin** | `admin@amiceamarine.com` | `Admin@Amice2026!` | Full Root Access to `/admin` Suite |
-| **Demo Customer** | `shopper@amiceamarine.com` | `Shopper@Amice2026!` | Customer Storefront, Cart, Orders, Wishlist |
+| **Demo Customer** | `shopper@amiceamarine.com` | `Customer@Amice2026!` | Customer Storefront, Cart, Orders, Wishlist |
 
 ---
 

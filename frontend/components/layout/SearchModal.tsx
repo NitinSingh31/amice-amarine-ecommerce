@@ -4,8 +4,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Search, X, ArrowRight, Flame } from 'lucide-react';
+import { Search, X, ArrowRight } from 'lucide-react';
 import { formatINR } from '@/lib/utils';
+import { API_BASE } from '@/lib/api';
 import { Badge } from '@/components/ui/Badge';
 
 interface SearchModalProps {
@@ -29,7 +30,6 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
     }
   }, [isOpen]);
 
-  // Debounced search suggestions fetch
   useEffect(() => {
     if (!query.trim() || query.length < 2) {
       setSuggestions([]);
@@ -39,7 +39,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
     const timer = setTimeout(async () => {
       setIsLoading(true);
       try {
-        const res = await fetch(`http://localhost:5000/api/search/suggestions?q=${encodeURIComponent(query.trim())}`);
+        const res = await fetch(`${API_BASE}/search/suggestions?q=${encodeURIComponent(query.trim())}`);
         if (res.ok) {
           const json = await res.json();
           setSuggestions(json.data?.suggestions || []);
@@ -73,18 +73,18 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
     }
   };
 
-  const quickTags = ['OVERSIZED TEES', 'HOODIES', 'JACKETS', 'CARGO', 'BLEACH', 'SOLO LEVELING', 'VESTS'];
+  const quickTags = ['OVERSIZED TEES', 'HOODIES', 'JACKETS', 'CARGO', 'FRENCH TERRY', 'HEAVYWEIGHT'];
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       {/* Backdrop */}
-      <div className="fixed inset-0 bg-black/85 backdrop-blur-md transition-opacity" onClick={onClose} />
+      <div className="fixed inset-0 bg-sage-950/40 backdrop-blur-sm transition-opacity" onClick={onClose} />
 
       <div className="relative min-h-screen flex items-start justify-center p-4 sm:p-6 md:p-20">
-        <div className="relative w-full max-w-2xl bg-zinc-950 border border-surface-border text-white shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+        <div className="relative w-full max-w-2xl bg-linen-50 border border-sage-200 text-sage-900 shadow-2xl rounded-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
           {/* Search Header Form */}
-          <form onSubmit={handleSearchSubmit} className="relative border-b border-surface-border flex items-center p-4 sm:p-5">
-            <Search className="w-5 h-5 text-zinc-400 mr-3 shrink-0" />
+          <form onSubmit={handleSearchSubmit} className="relative border-b border-sage-200 flex items-center p-4 sm:p-5 bg-white">
+            <Search className="w-5 h-5 text-sage-400 mr-3 shrink-0" />
             <input
               ref={inputRef}
               type="text"
@@ -92,96 +92,85 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Search anime tees, hoodies, jackets, accessories..."
-              className="w-full bg-transparent text-sm sm:text-base text-white placeholder:text-zinc-600 focus:outline-none"
+              className="w-full bg-transparent text-sm sm:text-base text-sage-900 placeholder:text-sage-400 focus:outline-none"
             />
             {query && (
               <button
                 type="button"
                 onClick={() => setQuery('')}
-                className="text-zinc-500 hover:text-white mr-2"
-                aria-label="Clear search"
+                className="text-sage-400 hover:text-sage-700 p-1"
+                aria-label="Clear query"
               >
                 <X className="w-4 h-4" />
               </button>
             )}
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-2 py-1 text-xs font-mono text-zinc-400 hover:text-white border border-surface-border bg-surface-subtle"
-            >
-              ESC
-            </button>
           </form>
 
-          {/* Quick Trending Tags */}
-          <div className="px-5 py-3 bg-surface-subtle border-b border-surface-border/50 flex items-center gap-2 overflow-x-auto text-xs font-mono">
-            <span className="text-[10px] text-zinc-500 uppercase flex items-center gap-1 shrink-0">
-              <Flame className="w-3 h-3 text-brand-crimson" /> TRENDING:
-            </span>
-            {quickTags.map((tag) => (
-              <button
-                key={tag}
-                type="button"
-                onClick={() => {
-                  setQuery(tag);
-                  router.push(`/search?q=${encodeURIComponent(tag)}`);
-                  onClose();
-                }}
-                className="px-2 py-0.5 bg-surface border border-surface-border text-zinc-400 hover:text-white hover:border-brand-crimson text-[10px] uppercase whitespace-nowrap transition-colors"
-              >
-                {tag}
-              </button>
-            ))}
-          </div>
+          {/* Body */}
+          <div className="p-4 sm:p-6 space-y-6 max-h-[60vh] overflow-y-auto">
+            {/* Quick search tags */}
+            <div>
+              <span className="text-[10px] uppercase font-semibold tracking-wider text-sage-500 block mb-2.5">
+                POPULAR CATEGORIES
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {quickTags.map((tag) => (
+                  <button
+                    key={tag}
+                    onClick={() => {
+                      onClose();
+                      router.push(`/search?q=${encodeURIComponent(tag.toLowerCase())}`);
+                    }}
+                    className="text-xs bg-white text-sage-700 border border-sage-200/80 px-3.5 py-1.5 rounded-full hover:border-terracotta-500 hover:text-terracotta-600 transition-colors shadow-2xs font-medium"
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-          {/* Results Suggestions */}
-          <div className="p-4 sm:p-6 max-h-[60vh] overflow-y-auto space-y-3">
+            {/* Live Search Suggestions */}
             {isLoading && (
-              <div className="text-center py-8 text-xs font-mono text-zinc-500 animate-pulse">
-                SEARCHING THE ARCHIVES...
+              <div className="py-8 text-center text-xs text-sage-500">
+                Searching collection...
               </div>
             )}
 
             {!isLoading && suggestions.length > 0 && (
-              <div className="space-y-2">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 block">
+              <div className="space-y-3">
+                <span className="text-[10px] uppercase font-semibold tracking-wider text-sage-500 block">
                   PRODUCTS ({suggestions.length})
                 </span>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {suggestions.map((item) => (
+                <div className="divide-y divide-sage-100">
+                  {suggestions.map((p) => (
                     <Link
-                      key={item._id}
-                      href={`/products/${item.slug}`}
+                      key={p._id}
+                      href={`/products/${p.slug}`}
                       onClick={onClose}
-                      className="flex gap-3 p-2.5 bg-surface border border-surface-border hover:border-brand-crimson transition-all group"
+                      className="flex items-center gap-3 py-2.5 px-2 rounded-xl hover:bg-linen-100 transition-colors group"
                     >
-                      <div className="relative w-14 aspect-[3/4] bg-zinc-900 border border-surface-border shrink-0 overflow-hidden">
-                        <Image
-                          src={item.images[0] || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=800'}
-                          alt={item.name}
-                          fill
-                          className="object-cover object-center group-hover:scale-105 transition-transform"
-                        />
+                      <div className="relative w-12 h-14 bg-linen-100 rounded-lg overflow-hidden shrink-0 border border-sage-200">
+                        {p.images?.[0] && (
+                          <Image
+                            src={p.images[0]}
+                            alt={p.name}
+                            fill
+                            className="object-cover object-center"
+                          />
+                        )}
                       </div>
-                      <div className="flex-1 flex flex-col justify-between">
-                        <div>
-                          <span className="text-[9px] font-mono text-brand-crimson uppercase block">
-                            {typeof item.category === 'object' ? item.category.name : 'STREETWEAR'}
-                          </span>
-                          <h4 className="text-xs font-bold uppercase line-clamp-1 text-white group-hover:text-brand-crimson transition-colors">
-                            {item.name}
-                          </h4>
-                        </div>
-                        <div className="flex items-baseline gap-2 font-mono">
-                          <span className="text-xs font-bold text-white">
-                            {formatINR(item.basePrice)}
-                          </span>
-                          {item.discountPercentage > 0 && (
-                            <Badge variant="discount" className="text-[8px] px-1 py-0">
-                              {item.discountPercentage}% OFF
-                            </Badge>
-                          )}
-                        </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="text-xs font-semibold text-sage-900 group-hover:text-terracotta-600 transition-colors truncate">
+                          {p.name}
+                        </h4>
+                        <p className="text-[11px] text-sage-500 truncate">
+                          {p.subtitle || 'Streetwear Collection'}
+                        </p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <span className="text-xs font-bold text-sage-900">
+                          {formatINR(p.basePrice)}
+                        </span>
                       </div>
                     </Link>
                   ))}
@@ -190,29 +179,11 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
             )}
 
             {!isLoading && query.length >= 2 && suggestions.length === 0 && (
-              <div className="text-center py-10 space-y-2">
-                <p className="text-xs font-mono text-zinc-400 uppercase">
-                  NO PRODUCTS FOUND FOR &quot;{query}&quot;
-                </p>
-                <p className="text-[11px] text-zinc-600">
-                  Try checking spelling or search with broader keywords like &quot;tee&quot;, &quot;hoodie&quot;, &quot;jacket&quot;.
-                </p>
+              <div className="py-8 text-center text-xs text-sage-500">
+                No products found matching &ldquo;{query}&rdquo;
               </div>
             )}
           </div>
-
-          {/* View Full Search Results Footer */}
-          {query.trim().length >= 2 && (
-            <div className="p-3 bg-surface-subtle border-t border-surface-border text-center">
-              <Link
-                href={`/search?q=${encodeURIComponent(query.trim())}`}
-                onClick={onClose}
-                className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-brand-crimson hover:underline uppercase"
-              >
-                VIEW ALL RESULTS FOR &quot;{query}&quot; <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-          )}
         </div>
       </div>
     </div>

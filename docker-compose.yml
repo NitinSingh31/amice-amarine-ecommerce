@@ -31,6 +31,9 @@ services:
       - BACKEND_URL=http://localhost:5000
       - RAZORPAY_KEY_ID=rzp_live_placeholder_key
       - RAZORPAY_KEY_SECRET=rzp_secret_placeholder_key
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME:-dobqwvddb}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY:-537941754467769}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET:--VQS9Y5-iimjvAVzxHM5F12PRE0}
     depends_on:
       - mongodb
 

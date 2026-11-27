@@ -41,25 +41,25 @@ export default async function CollectionPage({ params, searchParams }: Collectio
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       {/* Breadcrumb & Header */}
-      <div className="space-y-3 border-b border-surface-border pb-6">
+      <div className="space-y-3 border-b border-sage-200/80 pb-6">
         <Link
           href="/"
-          className="inline-flex items-center gap-1 text-xs font-mono text-zinc-500 hover:text-white transition-colors uppercase"
+          className="inline-flex items-center gap-1 text-xs text-sage-500 hover:text-sage-900 transition-colors uppercase font-medium"
         >
           <ArrowLeft className="w-3.5 h-3.5" /> HOME / COLLECTIONS
         </Link>
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white font-display">
+            <h1 className="text-3xl sm:text-4xl font-bold uppercase tracking-tight text-sage-900 font-serif">
               {title}
             </h1>
             {currentCategory?.description && (
-              <p className="text-xs sm:text-sm text-zinc-400 mt-2 max-w-2xl">
+              <p className="text-xs sm:text-sm text-sage-600 mt-2 max-w-2xl">
                 {currentCategory.description}
               </p>
             )}
           </div>
-          <span className="text-xs font-mono text-zinc-500">
+          <span className="text-xs text-sage-500 font-medium">
             SHOWING {products.length} PRODUCTS
           </span>
         </div>
@@ -69,10 +69,10 @@ export default async function CollectionPage({ params, searchParams }: Collectio
       <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
         <Link
           href="/collections/all-products"
-          className={`px-4 py-2 text-xs font-mono uppercase tracking-wider whitespace-nowrap border transition-colors ${
+          className={`px-4 py-2 text-xs uppercase tracking-wider whitespace-nowrap rounded-full border transition-all ${
             slug === 'all-products'
-              ? 'bg-white text-black border-white font-bold'
-              : 'bg-surface-subtle text-zinc-400 border-surface-border hover:text-white'
+              ? 'bg-sage-900 text-linen-50 border-sage-900 font-semibold shadow-xs'
+              : 'bg-white text-sage-700 border-sage-200 hover:border-terracotta-400 font-medium shadow-2xs'
           }`}
         >
           ALL PRODUCTS
@@ -81,10 +81,10 @@ export default async function CollectionPage({ params, searchParams }: Collectio
           <Link
             key={c._id}
             href={`/collections/${c.slug}`}
-            className={`px-4 py-2 text-xs font-mono uppercase tracking-wider whitespace-nowrap border transition-colors ${
+            className={`px-4 py-2 text-xs uppercase tracking-wider whitespace-nowrap rounded-full border transition-all ${
               slug === c.slug
-                ? 'bg-white text-black border-white font-bold'
-                : 'bg-surface-subtle text-zinc-400 border-surface-border hover:text-white'
+                ? 'bg-sage-900 text-linen-50 border-sage-900 font-semibold shadow-xs'
+                : 'bg-white text-sage-700 border-sage-200 hover:border-terracotta-400 font-medium shadow-2xs'
             }`}
           >
             {c.name}
@@ -94,7 +94,9 @@ export default async function CollectionPage({ params, searchParams }: Collectio
 
       {/* Main Layout: Sidebar Filters + Products Grid */}
       <div className="flex flex-col lg:flex-row gap-8 items-start">
-        <Suspense fallback={<div className="w-64 font-mono text-xs text-zinc-500">LOADING FILTERS...</div>}><FilterSidebar categories={categories} currentCategorySlug={slug} /></Suspense>
+        <Suspense fallback={<div className="w-64 text-xs text-sage-500">LOADING FILTERS...</div>}>
+          <FilterSidebar categories={categories} currentCategorySlug={slug} />
+        </Suspense>
 
         <div className="flex-1 w-full">
           {products.length > 0 ? (
@@ -104,19 +106,19 @@ export default async function CollectionPage({ params, searchParams }: Collectio
               ))}
             </div>
           ) : (
-            <div className="text-center py-20 border border-dashed border-surface-border p-8 space-y-4">
-              <h3 className="text-sm uppercase font-mono font-bold text-zinc-300">
-                NO PRODUCTS MATCH THE CHOSEN FILTERS
+            <div className="text-center py-24 bg-white rounded-2xl border border-dashed border-sage-200 p-8 space-y-4">
+              <h3 className="text-sm uppercase font-bold text-sage-800 font-serif">
+                NO PIECES MATCH YOUR CURRENT FILTERS
               </h3>
-              <p className="text-xs text-zinc-500">
-                Try widening your price range, deselecting size pills, or viewing all products.
+              <p className="text-xs text-sage-500 max-w-sm mx-auto">
+                Try resetting your filters or selecting a different size to discover available garments.
               </p>
-              <div>
+              <div className="pt-2">
                 <Link
                   href={`/collections/${slug}`}
-                  className="inline-block px-6 py-2.5 bg-white text-black text-xs font-bold uppercase tracking-wider hover:bg-zinc-200 transition-colors"
+                  className="inline-block px-6 py-2.5 bg-sage-900 text-linen-50 text-xs font-semibold uppercase tracking-wider rounded-full hover:bg-terracotta-600 transition-colors shadow-xs"
                 >
-                  CLEAR FILTERS
+                  RESET FILTERS
                 </Link>
               </div>
             </div>

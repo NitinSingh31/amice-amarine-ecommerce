@@ -9,7 +9,8 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
-import { ShoppingBag, Zap, Heart, Truck, RefreshCw, Shield, MapPin, CheckCircle2 } from 'lucide-react';
+import { ShoppingBag, Zap, Heart, MapPin, CheckCircle2 } from 'lucide-react';
+import { ProductReviews } from './ProductReviews';
 
 interface ProductDetailsClientProps {
   product: Product;
@@ -86,7 +87,7 @@ export const ProductDetailsClient: React.FC<ProductDetailsClientProps> = ({ prod
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
       {/* Left Column: Image Gallery */}
       <div className="lg:col-span-7 space-y-4">
-        <div className="relative aspect-[3/4] w-full border border-surface-border bg-zinc-900 overflow-hidden group">
+        <div className="relative aspect-[3/4] w-full rounded-2xl border border-sage-200/80 bg-linen-100 overflow-hidden shadow-xs group">
           <Image
             src={product.images[selectedImage] || product.images[0] || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=800'}
             alt={product.name}
@@ -109,8 +110,8 @@ export const ProductDetailsClient: React.FC<ProductDetailsClientProps> = ({ prod
                 key={idx}
                 type="button"
                 onClick={() => setSelectedImage(idx)}
-                className={`relative aspect-square border overflow-hidden transition-all ${
-                  selectedImage === idx ? 'border-brand-crimson ring-1 ring-brand-crimson' : 'border-surface-border opacity-70 hover:opacity-100'
+                className={`relative aspect-square rounded-xl border overflow-hidden transition-all shadow-2xs ${
+                  selectedImage === idx ? 'border-terracotta-500 ring-2 ring-terracotta-500/20' : 'border-sage-200 opacity-70 hover:opacity-100'
                 }`}
               >
                 <Image src={img} alt={`Thumbnail ${idx + 1}`} fill className="object-cover object-center" />
@@ -122,42 +123,42 @@ export const ProductDetailsClient: React.FC<ProductDetailsClientProps> = ({ prod
 
       {/* Right Column: Buy Box & Options */}
       <div className="lg:col-span-5 space-y-6">
-        <div className="space-y-2 border-b border-surface-border pb-6">
+        <div className="space-y-2 border-b border-sage-200/80 pb-6">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-mono uppercase tracking-widest text-brand-crimson">
+            <span className="text-xs uppercase font-semibold tracking-wider text-terracotta-600">
               {typeof product.category === 'object' ? product.category.name : 'STREETWEAR'}
             </span>
             <button
               onClick={() => toggleWishlist(product._id)}
-              className="text-zinc-400 hover:text-brand-crimson p-1 transition-colors flex items-center gap-1 text-xs font-mono"
+              className="text-sage-500 hover:text-terracotta-600 p-1 transition-colors flex items-center gap-1 text-xs"
               aria-label="Wishlist toggle"
             >
-              <Heart className={`w-5 h-5 ${wishlisted ? 'fill-brand-crimson text-brand-crimson' : ''}`} />
-              <span className="text-[10px] hidden sm:inline">{wishlisted ? 'SAVED' : 'SAVE'}</span>
+              <Heart className={`w-5 h-5 ${wishlisted ? 'fill-terracotta-500 text-terracotta-500' : ''}`} />
+              <span className="text-[10px] hidden sm:inline font-semibold">{wishlisted ? 'SAVED' : 'SAVE'}</span>
             </button>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white font-display">
+          <h1 className="text-2xl sm:text-3xl font-bold uppercase tracking-tight text-sage-900 font-serif leading-tight">
             {product.name}
           </h1>
 
           {product.subtitle && (
-            <p className="text-xs sm:text-sm text-zinc-400 font-medium">
+            <p className="text-xs sm:text-sm text-sage-600 font-normal">
               {product.subtitle}
             </p>
           )}
 
           {/* Pricing */}
           <div className="flex items-baseline gap-3 pt-3">
-            <span className="text-2xl sm:text-3xl font-black text-white font-mono">
+            <span className="text-2xl sm:text-3xl font-bold text-sage-900">
               {formatINR(product.basePrice)}
             </span>
             {product.compareAtPrice > product.basePrice && (
-              <span className="text-base text-zinc-500 line-through font-mono">
+              <span className="text-base text-sage-400 line-through">
                 {formatINR(product.compareAtPrice)}
               </span>
             )}
-            <span className="text-xs font-bold font-mono text-emerald-400 bg-emerald-950/40 border border-emerald-500/30 px-2 py-0.5">
+            <span className="text-xs font-semibold text-sage-800 bg-sage-100 border border-sage-200 rounded-full px-2.5 py-0.5">
               INCLUSIVE OF ALL TAXES
             </span>
           </div>
@@ -165,12 +166,12 @@ export const ProductDetailsClient: React.FC<ProductDetailsClientProps> = ({ prod
 
         {/* Size Selection */}
         <div className="space-y-3">
-          <div className="flex items-center justify-between text-xs font-mono">
-            <span className="uppercase text-zinc-300">
-              SELECT SIZE: <strong className="text-white">{selectedVariant?.size}</strong>
+          <div className="flex items-center justify-between text-xs">
+            <span className="uppercase text-sage-700 font-medium">
+              SELECT SIZE: <strong className="text-sage-900">{selectedVariant?.size}</strong>
             </span>
             {selectedVariant?.stock <= 5 && selectedVariant?.stock > 0 && (
-              <span className="text-amber-400 font-bold">
+              <span className="text-terracotta-600 font-semibold">
                 🔥 ONLY {selectedVariant.stock} LEFT IN STOCK!
               </span>
             )}
@@ -187,12 +188,12 @@ export const ProductDetailsClient: React.FC<ProductDetailsClientProps> = ({ prod
                   type="button"
                   disabled={isOutOfStock}
                   onClick={() => setSelectedVariant(v)}
-                  className={`py-3 text-xs font-mono font-bold uppercase border transition-all text-center ${
+                  className={`py-3 text-xs font-semibold uppercase rounded-xl border transition-all text-center ${
                     isSelected
-                      ? 'border-brand-crimson bg-brand-crimson/15 text-brand-crimson shadow-[0_0_12px_rgba(255,0,85,0.4)]'
+                      ? 'border-terracotta-500 bg-terracotta-50 text-terracotta-700 shadow-xs'
                       : isOutOfStock
-                      ? 'border-zinc-800 bg-zinc-950 text-zinc-600 line-through cursor-not-allowed'
-                      : 'border-surface-border bg-surface text-white hover:border-zinc-400'
+                      ? 'border-sage-200/60 bg-linen-100 text-sage-400 line-through cursor-not-allowed'
+                      : 'border-sage-200 bg-white text-sage-800 hover:border-sage-400 shadow-2xs'
                   }`}
                 >
                   {v.size}
@@ -205,21 +206,21 @@ export const ProductDetailsClient: React.FC<ProductDetailsClientProps> = ({ prod
         {/* Quantity Stepper & Add to Cart */}
         <div className="space-y-3 pt-2">
           <div className="flex gap-3">
-            <div className="flex items-center border border-surface-border bg-surface px-3 py-2">
+            <div className="flex items-center border border-sage-200 bg-white rounded-full px-4 py-2 shadow-2xs text-sage-800">
               <button
                 type="button"
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="text-zinc-400 hover:text-white px-1"
+                className="text-sage-500 hover:text-sage-900 px-1 font-bold"
               >
                 -
               </button>
-              <span className="px-3 text-xs font-mono font-bold text-white">
+              <span className="px-3 text-xs font-bold text-sage-900">
                 {quantity}
               </span>
               <button
                 type="button"
                 onClick={() => setQuantity(Math.min(selectedVariant?.stock || 10, quantity + 1))}
-                className="text-zinc-400 hover:text-white px-1"
+                className="text-sage-500 hover:text-sage-900 px-1 font-bold"
               >
                 +
               </button>
@@ -230,7 +231,7 @@ export const ProductDetailsClient: React.FC<ProductDetailsClientProps> = ({ prod
               size="lg"
               fullWidth
               onClick={handleAddToCart}
-              className="py-4"
+              className="py-4 shadow-sm"
             >
               <ShoppingBag className="w-4 h-4 mr-2" /> ADD TO CART
             </Button>
@@ -241,16 +242,16 @@ export const ProductDetailsClient: React.FC<ProductDetailsClientProps> = ({ prod
             size="lg"
             fullWidth
             onClick={handleBuyNow}
-            className="py-4"
+            className="py-4 shadow-sm"
           >
-            <Zap className="w-4 h-4 mr-2" /> BUY NOW (FAST CHECKOUT)
+            <Zap className="w-4 h-4 mr-2 text-ochre-400" /> BUY NOW (FAST CHECKOUT)
           </Button>
         </div>
 
         {/* Pincode Availability Checker */}
-        <div className="p-4 bg-surface-subtle border border-surface-border space-y-2">
-          <div className="flex items-center gap-2 text-xs font-mono font-bold text-white">
-            <MapPin className="w-4 h-4 text-brand-crimson" /> CHECK DELIVERY AVAILABILITY
+        <div className="p-4 bg-linen-100 rounded-2xl border border-sage-200/80 space-y-2.5">
+          <div className="flex items-center gap-2 text-xs font-semibold text-sage-900">
+            <MapPin className="w-4 h-4 text-terracotta-500" /> CHECK DELIVERY AVAILABILITY
           </div>
           <form onSubmit={handleCheckPincode} className="flex gap-2">
             <input
@@ -259,73 +260,73 @@ export const ProductDetailsClient: React.FC<ProductDetailsClientProps> = ({ prod
               onChange={(e) => setPincode(e.target.value)}
               placeholder="Enter 6-digit Pincode"
               maxLength={6}
-              className="flex-1 bg-zinc-900 border border-surface-border px-3 py-2 text-xs font-mono text-white placeholder:text-zinc-600 focus:outline-none focus:border-brand-crimson"
+              className="flex-1 bg-white border border-sage-200 rounded-xl px-3.5 py-2 text-xs text-sage-900 placeholder:text-sage-400 focus:outline-none focus:border-terracotta-500 shadow-2xs"
             />
             <button
               type="submit"
-              className="px-4 py-2 bg-surface border border-surface-border text-xs font-bold uppercase hover:bg-white hover:text-black transition-colors"
+              className="px-4 py-2 bg-sage-900 text-linen-50 rounded-xl text-xs font-semibold uppercase hover:bg-terracotta-600 transition-colors shadow-xs"
             >
               CHECK
             </button>
           </form>
 
           {pincodeStatus.checked && (
-            <div className={`flex items-start gap-1.5 text-xs font-mono ${pincodeStatus.valid ? 'text-emerald-400' : 'text-brand-crimson'}`}>
-              {pincodeStatus.valid && <CheckCircle2 className="w-3.5 h-3.5 shrink-0 mt-0.5" />}
+            <div className={`flex items-start gap-1.5 text-xs ${pincodeStatus.valid ? 'text-sage-800' : 'text-terracotta-600 font-medium'}`}>
+              {pincodeStatus.valid && <CheckCircle2 className="w-3.5 h-3.5 shrink-0 mt-0.5 text-sage-700" />}
               <span>{pincodeStatus.message}</span>
             </div>
           )}
         </div>
 
         {/* Specifications Tabs */}
-        <div className="border-t border-surface-border pt-4 space-y-3">
-          <div className="flex border-b border-surface-border text-xs font-mono">
+        <div className="border-t border-sage-200/80 pt-4 space-y-3">
+          <div className="flex border-b border-sage-200 text-xs">
             <button
               onClick={() => setActiveTab('specs')}
-              className={`px-4 py-2 font-bold uppercase transition-colors ${
+              className={`px-4 py-2 font-semibold uppercase transition-colors ${
                 activeTab === 'specs'
-                  ? 'border-b-2 border-brand-crimson text-brand-crimson'
-                  : 'text-zinc-400 hover:text-white'
+                  ? 'border-b-2 border-terracotta-500 text-terracotta-600'
+                  : 'text-sage-500 hover:text-sage-900'
               }`}
             >
               SPECIFICATIONS
             </button>
             <button
               onClick={() => setActiveTab('fit')}
-              className={`px-4 py-2 font-bold uppercase transition-colors ${
+              className={`px-4 py-2 font-semibold uppercase transition-colors ${
                 activeTab === 'fit'
-                  ? 'border-b-2 border-brand-crimson text-brand-crimson'
-                  : 'text-zinc-400 hover:text-white'
+                  ? 'border-b-2 border-terracotta-500 text-terracotta-600'
+                  : 'text-sage-500 hover:text-sage-900'
               }`}
             >
               DESCRIPTION & FIT
             </button>
             <button
               onClick={() => setActiveTab('shipping')}
-              className={`px-4 py-2 font-bold uppercase transition-colors ${
+              className={`px-4 py-2 font-semibold uppercase transition-colors ${
                 activeTab === 'shipping'
-                  ? 'border-b-2 border-brand-crimson text-brand-crimson'
-                  : 'text-zinc-400 hover:text-white'
+                  ? 'border-b-2 border-terracotta-500 text-terracotta-600'
+                  : 'text-sage-500 hover:text-sage-900'
               }`}
             >
               SHIPPING & EXCHANGES
             </button>
           </div>
 
-          <div className="p-2 text-xs font-mono text-zinc-300 leading-relaxed">
+          <div className="p-2 text-xs text-sage-700 leading-relaxed">
             {activeTab === 'specs' && product.specifications && (
               <div className="space-y-2">
                 {Object.entries(product.specifications).map(([k, v]) => (
-                  <div key={k} className="flex justify-between border-b border-surface-border/40 py-1">
-                    <span className="text-zinc-500 uppercase">{k}:</span>
-                    <span className="text-white font-medium">{String(v)}</span>
+                  <div key={k} className="flex justify-between border-b border-sage-100 py-1.5">
+                    <span className="text-sage-500 uppercase font-medium">{k}:</span>
+                    <span className="text-sage-900 font-semibold">{String(v)}</span>
                   </div>
                 ))}
               </div>
             )}
 
             {activeTab === 'fit' && (
-              <div className="space-y-2 font-sans">
+              <div className="space-y-2">
                 <p>{product.description}</p>
               </div>
             )}
@@ -341,6 +342,9 @@ export const ProductDetailsClient: React.FC<ProductDetailsClientProps> = ({ prod
           </div>
         </div>
       </div>
+
+      {/* Customer Reviews & Silhouette Ratings */}
+      <ProductReviews productId={product._id} productName={product.name} />
     </div>
   );
 };

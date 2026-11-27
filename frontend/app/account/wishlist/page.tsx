@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 import { useCart } from '@/context/CartContext';
 import { formatINR } from '@/lib/utils';
+import { API_BASE } from '@/lib/api';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Heart, Trash2, ShoppingBag, ArrowLeft } from 'lucide-react';
@@ -23,7 +24,7 @@ export default function WishlistPage() {
         return;
       }
       try {
-        const res = await fetch('http://localhost:5000/api/auth/wishlist', {
+        const res = await fetch(`${API_BASE}/auth/wishlist`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.ok) {

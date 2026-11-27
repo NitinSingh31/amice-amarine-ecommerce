@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { formatINR } from '@/lib/utils';
-import { uploadImage } from '@/lib/api';
+import { uploadImage, API_BASE } from '@/lib/api';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import {
@@ -166,11 +166,11 @@ export default function AdminDashboardPage() {
 
     try {
       const [analyticsRes, productsRes, ordersRes, couponsRes, settingsRes] = await Promise.all([
-        fetch('http://localhost:5000/api/admin/analytics', { headers }),
-        fetch('http://localhost:5000/api/admin/products', { headers }),
-        fetch('http://localhost:5000/api/admin/orders', { headers }),
-        fetch('http://localhost:5000/api/admin/coupons', { headers }),
-        fetch('http://localhost:5000/api/admin/settings', { headers }),
+        fetch(`${API_BASE}/admin/analytics`, { headers }),
+        fetch(`${API_BASE}/admin/products`, { headers }),
+        fetch(`${API_BASE}/admin/orders`, { headers }),
+        fetch(`${API_BASE}/admin/coupons`, { headers }),
+        fetch(`${API_BASE}/admin/settings`, { headers }),
       ]);
 
       const [aData, pData, oData, cData, sData] = await Promise.all([
@@ -222,7 +222,7 @@ export default function AdminDashboardPage() {
     ];
 
     try {
-      const res = await fetch('http://localhost:5000/api/admin/products', {
+      const res = await fetch(`${API_BASE}/admin/products`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -257,7 +257,7 @@ export default function AdminDashboardPage() {
     if (!confirm('Are you sure you want to remove ' + name + ' from the store?')) return;
     const token = typeof window !== 'undefined' ? localStorage.getItem('amice_token') : null;
     try {
-      const res = await fetch('http://localhost:5000/api/admin/products/' + id, {
+      const res = await fetch(`${API_BASE}/admin/products/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -280,7 +280,7 @@ export default function AdminDashboardPage() {
     const token = typeof window !== 'undefined' ? localStorage.getItem('amice_token') : null;
 
     try {
-      const res = await fetch('http://localhost:5000/api/admin/orders/' + selectedOrder.orderNumber + '/status', {
+      const res = await fetch(`${API_BASE}/admin/orders/${selectedOrder.orderNumber}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -311,7 +311,7 @@ export default function AdminDashboardPage() {
     const token = typeof window !== 'undefined' ? localStorage.getItem('amice_token') : null;
 
     try {
-      const res = await fetch('http://localhost:5000/api/admin/coupons', {
+      const res = await fetch(`${API_BASE}/admin/coupons`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -336,7 +336,7 @@ export default function AdminDashboardPage() {
     if (!confirm('Deactivate coupon ' + code + '?')) return;
     const token = typeof window !== 'undefined' ? localStorage.getItem('amice_token') : null;
     try {
-      const res = await fetch('http://localhost:5000/api/admin/coupons/' + id, {
+      const res = await fetch(`${API_BASE}/admin/coupons/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -358,7 +358,7 @@ export default function AdminDashboardPage() {
     const token = typeof window !== 'undefined' ? localStorage.getItem('amice_token') : null;
 
     try {
-      const res = await fetch('http://localhost:5000/api/admin/settings', {
+      const res = await fetch(`${API_BASE}/admin/settings`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

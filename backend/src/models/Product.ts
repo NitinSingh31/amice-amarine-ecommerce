@@ -26,6 +26,8 @@ export interface IProduct extends Document {
   careInstructions: string[];
   variants: IProductVariant[];
   totalStock: number;
+  averageRating: number;
+  reviewCount: number;
   isFeatured: boolean;
   isBestseller: boolean;
   isNewArrival: boolean;
@@ -59,6 +61,8 @@ const ProductSchema = new Schema<IProduct>(
     careInstructions: [{ type: String }],
     variants: [ProductVariantSchema],
     totalStock: { type: Number, default: 0 },
+    averageRating: { type: Number, default: 4.9, min: 0, max: 5 },
+    reviewCount: { type: Number, default: 0, min: 0 },
     isFeatured: { type: Boolean, default: false, index: true },
     isBestseller: { type: Boolean, default: false, index: true },
     isNewArrival: { type: Boolean, default: true, index: true },

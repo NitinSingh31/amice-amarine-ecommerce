@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import { SlidersHorizontal, X, RotateCcw, Check } from 'lucide-react';
+import { SlidersHorizontal, RotateCcw } from 'lucide-react';
 
 interface FilterSidebarProps {
   categories: any[];
@@ -46,16 +46,16 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({ categories, curren
   const hasActiveFilters = Boolean(selectedSize || selectedInStock || selectedDiscount || minPrice || maxPrice);
 
   return (
-    <aside className="w-full lg:w-64 space-y-6 text-xs font-mono shrink-0">
+    <aside className="w-full lg:w-64 space-y-6 text-xs shrink-0">
       {/* Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-surface-border">
-        <span className="font-bold uppercase tracking-wider text-white flex items-center gap-1.5">
-          <SlidersHorizontal className="w-3.5 h-3.5 text-brand-crimson" /> FILTERS
+      <div className="flex items-center justify-between pb-3 border-b border-sage-200/80">
+        <span className="font-bold uppercase tracking-wider text-sage-900 flex items-center gap-1.5 font-serif text-sm">
+          <SlidersHorizontal className="w-3.5 h-3.5 text-terracotta-500" /> FILTERS
         </span>
         {hasActiveFilters && (
           <button
             onClick={clearAllFilters}
-            className="text-[10px] text-zinc-500 hover:text-brand-crimson transition-colors flex items-center gap-1 uppercase"
+            className="text-[10px] text-sage-500 hover:text-terracotta-600 transition-colors flex items-center gap-1 uppercase font-semibold"
           >
             <RotateCcw className="w-3 h-3" /> RESET
           </button>
@@ -64,13 +64,13 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({ categories, curren
 
       {/* Sort Selector */}
       <div className="space-y-2">
-        <label className="text-[11px] uppercase tracking-wider font-bold text-zinc-400 block">
+        <label className="text-[11px] uppercase tracking-wider font-semibold text-sage-700 block">
           SORT BY
         </label>
         <select
           value={selectedSort}
           onChange={(e) => updateParam('sort', e.target.value)}
-          className="w-full bg-surface-subtle border border-surface-border p-2.5 text-xs text-white focus:outline-none focus:border-brand-crimson"
+          className="w-full bg-white border border-sage-200 rounded-xl p-2.5 text-xs text-sage-900 focus:outline-none focus:border-terracotta-500 shadow-2xs font-medium"
         >
           <option value="newest">Newest Drops</option>
           <option value="popular">Most Coveted / Bestsellers</option>
@@ -81,8 +81,8 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({ categories, curren
       </div>
 
       {/* Size Pills Filter */}
-      <div className="space-y-2 pt-2 border-t border-surface-border/50">
-        <label className="text-[11px] uppercase tracking-wider font-bold text-zinc-400 block">
+      <div className="space-y-2 pt-2 border-t border-sage-100">
+        <label className="text-[11px] uppercase tracking-wider font-semibold text-sage-700 block">
           SIZE
         </label>
         <div className="grid grid-cols-4 gap-1.5">
@@ -92,10 +92,10 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({ categories, curren
               <button
                 key={s}
                 onClick={() => updateParam('size', isSelected ? null : s)}
-                className={`py-2 text-[11px] font-bold uppercase border transition-all text-center ${
+                className={`py-2 text-[11px] font-semibold uppercase rounded-xl border transition-all text-center ${
                   isSelected
-                    ? 'bg-brand-crimson text-white border-brand-crimson shadow-[0_0_10px_rgba(255,0,85,0.4)]'
-                    : 'bg-surface border-surface-border text-zinc-300 hover:border-zinc-500'
+                    ? 'bg-sage-900 text-linen-50 border-sage-900 shadow-xs'
+                    : 'bg-white border-sage-200 text-sage-700 hover:border-terracotta-400 shadow-2xs'
                 }`}
               >
                 {s}
@@ -105,62 +105,24 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({ categories, curren
         </div>
       </div>
 
-      {/* Price Range Filter */}
-      <div className="space-y-2 pt-2 border-t border-surface-border/50">
-        <label className="text-[11px] uppercase tracking-wider font-bold text-zinc-400 block">
-          PRICE RANGE (₹)
-        </label>
-        <div className="grid grid-cols-2 gap-2">
-          <input
-            type="number"
-            placeholder="Min ₹"
-            value={minPrice}
-            onChange={(e) => updateParam('minPrice', e.target.value || null)}
-            className="bg-surface border border-surface-border px-2.5 py-2 text-xs text-white placeholder:text-zinc-600 focus:outline-none focus:border-brand-crimson"
-          />
-          <input
-            type="number"
-            placeholder="Max ₹"
-            value={maxPrice}
-            onChange={(e) => updateParam('maxPrice', e.target.value || null)}
-            className="bg-surface border border-surface-border px-2.5 py-2 text-xs text-white placeholder:text-zinc-600 focus:outline-none focus:border-brand-crimson"
-          />
-        </div>
-      </div>
-
-      {/* Availability Filter */}
-      <div className="pt-2 border-t border-surface-border/50">
-        <label className="flex items-center gap-2 cursor-pointer select-none text-zinc-300 hover:text-white">
-          <input
-            type="checkbox"
-            checked={selectedInStock}
-            onChange={(e) => updateParam('inStock', e.target.checked ? 'true' : null)}
-            className="accent-brand-crimson w-4 h-4 rounded-none cursor-pointer"
-          />
-          <span className="text-[11px] uppercase tracking-wider font-bold">
-            IN STOCK ONLY
-          </span>
-        </label>
-      </div>
-
-      {/* Discount Threshold */}
-      <div className="space-y-2 pt-2 border-t border-surface-border/50">
-        <label className="text-[11px] uppercase tracking-wider font-bold text-zinc-400 block">
-          DISCOUNT
+      {/* Discount Filter */}
+      <div className="space-y-2 pt-2 border-t border-sage-100">
+        <label className="text-[11px] uppercase tracking-wider font-semibold text-sage-700 block">
+          MINIMUM DISCOUNT
         </label>
         <div className="space-y-1">
           {discounts.map((d) => (
             <button
               key={d.value}
               onClick={() => updateParam('discount', selectedDiscount === d.value ? null : d.value)}
-              className={`w-full text-left px-2 py-1.5 text-xs transition-colors flex items-center justify-between ${
+              className={`w-full text-left px-3 py-2 rounded-xl text-xs flex items-center justify-between transition-colors ${
                 selectedDiscount === d.value
-                  ? 'text-brand-crimson font-bold bg-brand-crimson/10'
-                  : 'text-zinc-400 hover:text-white'
+                  ? 'bg-terracotta-50 text-terracotta-700 font-semibold border border-terracotta-200'
+                  : 'text-sage-700 hover:bg-linen-100'
               }`}
             >
               <span>{d.label}</span>
-              {selectedDiscount === d.value && <Check className="w-3.5 h-3.5" />}
+              {selectedDiscount === d.value && <span className="text-terracotta-600">✓</span>}
             </button>
           ))}
         </div>

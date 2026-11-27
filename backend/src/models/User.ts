@@ -24,6 +24,8 @@ export interface IUser extends Document {
   wishlist: mongoose.Types.ObjectId[];
   isActive: boolean;
   lastLogin?: Date;
+  passwordResetToken?: string;
+  passwordResetExpires?: Date;
   comparePassword(candidate: string): Promise<boolean>;
   createdAt: Date;
   updatedAt: Date;
@@ -57,6 +59,8 @@ const UserSchema = new Schema<IUser>(
     wishlist: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
     isActive: { type: Boolean, default: true },
     lastLogin: { type: Date },
+    passwordResetToken: { type: String, select: false },
+    passwordResetExpires: { type: Date, select: false },
   },
   {
     timestamps: true,

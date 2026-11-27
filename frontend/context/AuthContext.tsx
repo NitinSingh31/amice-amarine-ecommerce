@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { API_BASE as GLOBAL_API_BASE } from '@/lib/api';
 
 export interface UserAddress {
   _id?: string;
@@ -51,7 +52,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-  const API_BASE = 'http://localhost:5000/api/auth';
+  const API_BASE = `${GLOBAL_API_BASE}/auth`;
 
   // Load token on mount
   useEffect(() => {

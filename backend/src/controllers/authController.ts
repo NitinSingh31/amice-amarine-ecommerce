@@ -4,6 +4,8 @@ import { AppError } from '../utils/AppError.js';
 import { sendSuccess } from '../utils/responseHandler.js';
 import { generateToken, setAuthCookie, clearAuthCookie } from '../utils/jwt.js';
 import { AuthenticatedRequest } from '../middleware/auth.js';
+import { emailService } from '../services/emailService.js';
+import crypto from 'crypto';
 import { z } from 'zod';
 import mongoose from 'mongoose';
 
@@ -315,6 +317,84 @@ export async function changePassword(req: AuthenticatedRequest, res: Response, n
     await user.save();
 
     sendSuccess(res, null, 'Password updated successfully');
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function forgotPassword(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      throw new AppError('Email address is required.', 400, 'MISSING_EMAIL');
+    }
+
+    const user = await User.findOne({ email: email.toLowerCase().trim() });
+    if (!user) {
+      // Don't disclose user existence for security
+      sendSuccess(res, null, 'If an account exists with this email, a reset transmission has been dispatched.');
+      return;
+    }
+
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+    user.passwordResetToken = hashedToken;
+    user.passwordResetExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+    await user.save({ validateBeforeSave: false });
+
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+    const resetUrl = `${frontendUrl}/account/reset-password/${resetToken}`;
+
+    await emailService.sendPasswordReset(user.email, resetUrl).catch((err) => {
+      console.warn('[Email Warning] Failed to send password reset email:', err.message);
+    });
+
+    sendSuccess(
+      res,
+      { resetToken: process.env.NODE_ENV !== 'production' ? resetToken : undefined },
+      'If an account exists with this email, a reset transmission has been dispatched.'
+    );
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function resetPassword(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    if (!password || password.length < 8) {
+      throw new AppError('Password must be at least 8 characters.', 400, 'INVALID_PASSWORD');
+    }
+
+    const tokenStr = String(token);
+    const hashedToken = crypto.createHash('sha256').update(tokenStr).digest('hex');
+
+    const user = await User.findOne({
+      passwordResetToken: hashedToken,
+      passwordResetExpires: { $gt: new Date() },
+    }).select('+password');
+
+    if (!user) {
+      throw new AppError('Password reset clearance token is invalid or has expired.', 400, 'INVALID_RESET_TOKEN');
+    }
+
+    user.password = password;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
+
+    const jwtToken = generateToken({
+      userId: user._id.toString(),
+      email: user.email,
+      role: user.role,
+    });
+
+    setAuthCookie(res, jwtToken);
+
+    sendSuccess(res, { user, token: jwtToken }, 'Password has been reset successfully. You are now logged in.');
   } catch (error) {
     next(error);
   }

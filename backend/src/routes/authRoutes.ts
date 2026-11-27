@@ -12,6 +12,8 @@ import {
   toggleWishlist,
   getWishlist,
   changePassword,
+  forgotPassword,
+  resetPassword,
   registerSchema,
   loginSchema,
 } from '../controllers/authController.js';
@@ -25,6 +27,8 @@ const router = Router();
 router.post('/register', authLimiter, validateRequest({ body: registerSchema }), register);
 router.post('/login', authLimiter, validateRequest({ body: loginSchema }), login);
 router.post('/logout', logout);
+router.post('/forgot-password', authLimiter, forgotPassword);
+router.post('/reset-password/:token', authLimiter, resetPassword);
 
 // Protected customer account endpoints
 router.get('/me', authenticate, getMe);

@@ -7,12 +7,6 @@ import { formatINR } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import {
   CheckCircle2,
-  PackageCheck,
-  Truck,
-  ArrowRight,
-  ShieldCheck,
-  Clock,
-  Sparkles,
   Search,
 } from 'lucide-react';
 
@@ -35,84 +29,84 @@ function SuccessContent() {
     <div className="max-w-3xl mx-auto px-4 py-16 sm:py-24 space-y-10">
       {/* Success Badge & Headline */}
       <div className="text-center space-y-3">
-        <div className="w-16 h-16 rounded-full bg-emerald-950/60 border border-emerald-500/50 flex items-center justify-center mx-auto text-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.3)]">
-          <CheckCircle2 className="w-8 h-8" />
+        <div className="w-16 h-16 rounded-full bg-sage-100 border border-sage-200 flex items-center justify-center mx-auto text-sage-800 shadow-xs">
+          <CheckCircle2 className="w-8 h-8 text-sage-800" />
         </div>
-        <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-brand-crimson block font-bold">
-          ORDER CONFIRMED // SYNDICATE DISPATCH
+        <span className="text-[10px] uppercase tracking-wider text-terracotta-600 block font-semibold">
+          ORDER CONFIRMED // DISPATCH INITIATED
         </span>
-        <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white font-display">
+        <h1 className="text-3xl sm:text-4xl font-bold uppercase tracking-tight text-sage-900 font-serif">
           THANK YOU FOR YOUR ORDER
         </h1>
-        <p className="text-xs font-mono text-zinc-400">
-          Order Reference: <strong className="text-white">{orderNumber}</strong> • Total Paid:{' '}
-          <strong className="text-brand-crimson">{formatINR(total)}</strong>
+        <p className="text-xs text-sage-600">
+          Order Reference: <strong className="text-sage-900">{orderNumber}</strong> • Total Paid:{' '}
+          <strong className="text-terracotta-600 font-bold">{formatINR(total)}</strong>
         </p>
       </div>
 
       {/* Order Status Timeline Card */}
-      <div className="bg-surface border border-surface-border p-6 sm:p-8 space-y-6">
-        <div className="flex items-center justify-between border-b border-surface-border pb-4">
+      <div className="bg-white rounded-2xl border border-sage-200/80 p-6 sm:p-8 space-y-6 shadow-xs">
+        <div className="flex items-center justify-between border-b border-sage-100 pb-4">
           <div>
-            <span className="text-xs font-mono font-bold uppercase text-white">
+            <span className="text-xs font-bold uppercase text-sage-900 font-serif">
               DISPATCH TIMELINE
             </span>
-            <p className="text-[11px] text-zinc-400 font-mono">
-              Estimated Delivery across India: <strong className="text-emerald-400">{formattedDelivery}</strong>
+            <p className="text-[11px] text-sage-600">
+              Estimated Delivery across India: <strong className="text-sage-900 font-semibold">{formattedDelivery}</strong>
             </p>
           </div>
-          <span className="text-[10px] font-mono uppercase bg-surface-subtle border border-surface-border px-2 py-1 text-zinc-300">
+          <span className="text-[10px] uppercase bg-linen-100 border border-sage-200 rounded-full px-3 py-1 text-sage-700 font-medium">
             {method === 'cod' ? 'CASH ON DELIVERY' : 'PREPAID ONLINE (RAZORPAY)'}
           </span>
         </div>
 
         {/* 4-Step Fulfillment Tracker */}
-        <div className="grid grid-cols-4 gap-2 text-center text-xs font-mono">
+        <div className="grid grid-cols-4 gap-2 text-center text-xs">
           <div className="space-y-1">
-            <div className="w-8 h-8 rounded-full bg-emerald-500 text-black flex items-center justify-center mx-auto font-bold text-[10px]">
+            <div className="w-8 h-8 rounded-full bg-sage-900 text-linen-50 flex items-center justify-center mx-auto font-bold text-[10px]">
               ✓
             </div>
-            <span className="text-[10px] font-bold text-white uppercase block">Placed</span>
-            <span className="text-[9px] text-zinc-500">Just now</span>
+            <span className="text-[10px] font-semibold text-sage-900 uppercase block">Placed</span>
+            <span className="text-[9px] text-sage-500">Just now</span>
           </div>
 
           <div className="space-y-1">
-            <div className="w-8 h-8 rounded-full bg-brand-crimson text-white flex items-center justify-center mx-auto font-bold text-[10px] animate-pulse">
+            <div className="w-8 h-8 rounded-full bg-terracotta-500 text-white flex items-center justify-center mx-auto font-bold text-[10px] animate-pulse">
               2
             </div>
-            <span className="text-[10px] font-bold text-brand-crimson uppercase block">Quality Check</span>
-            <span className="text-[9px] text-zinc-500">Within 24h</span>
+            <span className="text-[10px] font-semibold text-terracotta-600 uppercase block">Quality Check</span>
+            <span className="text-[9px] text-sage-500">Within 24h</span>
           </div>
 
           <div className="space-y-1 opacity-50">
-            <div className="w-8 h-8 rounded-full bg-zinc-800 text-zinc-500 flex items-center justify-center mx-auto font-bold text-[10px]">
+            <div className="w-8 h-8 rounded-full bg-linen-200 text-sage-500 flex items-center justify-center mx-auto font-bold text-[10px]">
               3
             </div>
-            <span className="text-[10px] uppercase block text-zinc-400">Shipped</span>
-            <span className="text-[9px] text-zinc-500">Delhivery</span>
+            <span className="text-[10px] uppercase block text-sage-600 font-medium">Shipped</span>
+            <span className="text-[9px] text-sage-500">Express Delivery</span>
           </div>
 
           <div className="space-y-1 opacity-50">
-            <div className="w-8 h-8 rounded-full bg-zinc-800 text-zinc-500 flex items-center justify-center mx-auto font-bold text-[10px]">
+            <div className="w-8 h-8 rounded-full bg-linen-200 text-sage-500 flex items-center justify-center mx-auto font-bold text-[10px]">
               4
             </div>
-            <span className="text-[10px] uppercase block text-zinc-400">Delivered</span>
-            <span className="text-[9px] text-zinc-500">{formattedDelivery}</span>
+            <span className="text-[10px] uppercase block text-sage-600 font-medium">Delivered</span>
+            <span className="text-[9px] text-sage-500">{formattedDelivery}</span>
           </div>
         </div>
 
         {/* What to expect box */}
-        <div className="p-4 bg-surface-subtle border border-surface-border text-xs font-mono text-zinc-400 space-y-1 leading-relaxed">
-          <p className="text-white font-bold uppercase">WHAT HAPPENS NEXT?</p>
+        <div className="p-4 bg-linen-100 rounded-xl border border-sage-200/80 text-xs text-sage-700 space-y-1 leading-relaxed">
+          <p className="text-sage-900 font-bold uppercase font-serif">WHAT HAPPENS NEXT?</p>
           <p>• A confirmation receipt has been sent to your email with your tax invoice details.</p>
-          <p>• Once your streetwear items are inspected and packed, you will receive courier SMS tracking updates.</p>
+          <p>• Once your items are inspected and packed, you will receive courier SMS tracking updates.</p>
           <p>• Need to adjust your size? 7-day hassle-free exchanges are available upon delivery.</p>
         </div>
 
         {/* Action Buttons */}
-        <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
           <Link href={'/tracking?order=' + orderNumber} className="w-full sm:w-auto">
-            <Button variant="glow" size="md" className="w-full gap-2">
+            <Button variant="glow" size="md" className="w-full gap-2 shadow-xs">
               <Search className="w-4 h-4" /> TRACK SHIPMENT LIVE
             </Button>
           </Link>
@@ -136,7 +130,7 @@ export default function CheckoutSuccessPage() {
   return (
     <Suspense
       fallback={
-        <div className="max-w-3xl mx-auto px-4 py-20 text-center font-mono text-xs text-zinc-500 animate-pulse">
+        <div className="max-w-3xl mx-auto px-4 py-20 text-center text-xs text-sage-500 animate-pulse font-medium">
           LOADING ORDER CONFIRMATION...
         </div>
       }

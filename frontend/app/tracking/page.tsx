@@ -4,6 +4,7 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { formatINR } from '@/lib/utils';
+import { API_BASE } from '@/lib/api';
 import { Button } from '@/components/ui/Button';
 import {
   Search,
@@ -99,7 +100,7 @@ function TrackingContent() {
     setCancelSuccessMsg(null);
 
     try {
-      let url = 'http://localhost:5000/api/orders/track/' + encodeURIComponent(orderNum.trim());
+      let url = `${API_BASE}/orders/track/${encodeURIComponent(orderNum.trim())}`;
       if (phoneNum && phoneNum.trim()) {
         url += '?phone=' + encodeURIComponent(phoneNum.trim());
       }
@@ -146,7 +147,7 @@ function TrackingContent() {
     setIsCancelling(true);
     try {
       const token = typeof window !== 'undefined' ? localStorage.getItem('amice_token') : null;
-      const res = await fetch('http://localhost:5000/api/orders/' + orderData.orderNumber + '/cancel', {
+      const res = await fetch(`${API_BASE}/orders/${orderData.orderNumber}/cancel`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

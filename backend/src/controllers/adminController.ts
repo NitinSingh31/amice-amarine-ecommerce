@@ -10,6 +10,7 @@ import { AppError } from '../utils/AppError.js';
 import { sendSuccess } from '../utils/responseHandler.js';
 import { AuthenticatedRequest } from '../middleware/auth.js';
 import { ORDER_STATUS } from '../config/constants.js';
+import { emailService } from '../services/emailService.js';
 
 export async function getAnalytics(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
@@ -275,6 +276,12 @@ export async function updateAdminOrderStatus(req: AuthenticatedRequest, res: Res
     });
 
     await order.save();
+
+    if (status === 'shipped' || status === 'in_transit') {
+      emailService.sendShippingUpdate(order).catch((err) => {
+        console.warn('[Email Warning] Shipping update email failed:', err.message);
+      });
+    }
 
     sendSuccess(res, { order }, `Order ${order.orderNumber} status updated to ${status}.`);
   } catch (error) {

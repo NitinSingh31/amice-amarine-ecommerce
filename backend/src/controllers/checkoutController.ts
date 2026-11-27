@@ -6,6 +6,7 @@ import { StoreSettings } from '../models/StoreSettings.js';
 import { sendSuccess } from '../utils/responseHandler.js';
 import { AppError } from '../utils/AppError.js';
 import { AuthenticatedRequest } from '../middleware/auth.js';
+import { emailService } from '../services/emailService.js';
 import mongoose from 'mongoose';
 
 interface CheckoutItemInput {
@@ -260,6 +261,11 @@ export async function createOrder(req: AuthenticatedRequest, res: Response, next
           note: `Order created via ${paymentMethod.toUpperCase()}.`,
         },
       ],
+    });
+
+    // Trigger transactional email asynchronously
+    emailService.sendOrderConfirmation(order).catch((err) => {
+      console.warn('[Email Warning] Order confirmation dispatch failed:', err.message);
     });
 
     sendSuccess(

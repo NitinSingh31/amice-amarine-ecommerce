@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth, UserAddress } from '@/context/AuthContext';
 import { Button } from '@/components/ui/Button';
+import { API_BASE } from '@/lib/api';
 import { Input } from '@/components/ui/Input';
 import {
   User,
@@ -36,7 +37,7 @@ export default function AccountDashboardPage() {
       setIsLoadingOrders(true);
       try {
         const token = localStorage.getItem('amice_token');
-        const res = await fetch('http://localhost:5000/api/orders/my-orders', {
+        const res = await fetch(`${API_BASE}/orders/my-orders`, {
           headers: {
             'Content-Type': 'application/json',
             ...(token && { Authorization: `Bearer ${token}` }),

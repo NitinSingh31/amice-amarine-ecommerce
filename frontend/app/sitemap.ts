@@ -12,12 +12,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/collections/bottoms`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${baseUrl}/collections/accessories`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${baseUrl}/tracking`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
+    { url: `${baseUrl}/policies/shipping`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
+    { url: `${baseUrl}/policies/returns`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
+    { url: `${baseUrl}/policies/privacy`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
+    { url: `${baseUrl}/policies/terms`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.4 },
+    { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
     { url: `${baseUrl}/account/login`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
     { url: `${baseUrl}/account/register`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
   ];
 
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+
   try {
-    const res = await fetch('http://localhost:5000/api/products?limit=50', { cache: 'no-store' });
+    const res = await fetch(`${apiUrl}/products?limit=50`, { cache: 'no-store' });
     const data = await res.json();
     if (data.success && data.data?.products) {
       const productRoutes: MetadataRoute.Sitemap = data.data.products.map((p: any) => ({
