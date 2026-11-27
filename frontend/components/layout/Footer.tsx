@@ -56,13 +56,13 @@ export const Footer: React.FC = () => {
           {/* Brand Ethos */}
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="inline-block" aria-label="Amice Amarine Home">
-              <div className="relative h-14 w-36 -ml-1">
+              <div className="relative h-11 w-48 -ml-1">
                 <Image
-                  src="/images/logo.jpg"
+                  src="/images/logo-horizontal.png"
                   alt="Amice Amarine Logo"
                   fill
-                  sizes="144px"
-                  className="object-contain object-left mix-blend-multiply"
+                  sizes="192px"
+                  className="object-contain object-left"
                 />
               </div>
             </Link>

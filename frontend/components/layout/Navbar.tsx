@@ -63,14 +63,14 @@ export const Navbar: React.FC = () => {
             {/* Brand Logo */}
             <div className="flex-1 lg:flex-none flex justify-center lg:justify-start">
               <Link href="/" className="group flex items-center py-1" aria-label="Amice Amarine Home">
-                <div className="relative h-12 w-28 sm:h-14 sm:w-36 flex items-center justify-center">
+                <div className="relative h-10 w-44 sm:h-12 sm:w-56 flex items-center justify-start">
                   <Image
-                    src="/images/logo.jpg"
-                    alt="Amice Amarine Logo"
+                    src="/images/logo-horizontal.png"
+                    alt="Amice Amarine - Effortless Elegance, Deeply Rooted"
                     fill
                     priority
-                    sizes="(max-width: 640px) 112px, 144px"
-                    className="object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 640px) 176px, 224px"
+                    className="object-contain object-left transition-transform duration-300 group-hover:scale-[1.02]"
                   />
                 </div>
               </Link>
@@ -203,13 +203,13 @@ export const Navbar: React.FC = () => {
       {isMobileMenuOpen && (
         <div className="fixed inset-0 top-16 z-50 bg-linen-50/98 backdrop-blur-xl border-t border-sage-200 lg:hidden flex flex-col justify-between p-6 overflow-y-auto animate-in slide-in-from-left duration-200">
           <div className="space-y-6">
-            <div className="relative h-12 w-28 -ml-1">
+            <div className="relative h-10 w-44 -ml-1">
               <Image
-                src="/images/logo.jpg"
+                src="/images/logo-horizontal.png"
                 alt="Amice Amarine Logo"
                 fill
-                sizes="112px"
-                className="object-contain object-left mix-blend-multiply"
+                sizes="176px"
+                className="object-contain object-left"
               />
             </div>
             <div className="text-[10px] uppercase font-semibold tracking-wider text-sage-500">

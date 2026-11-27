@@ -29,9 +29,9 @@ export const metadata: Metadata = {
     template: '%s | AMICE AMARINE',
   },
   icons: {
-    icon: '/images/logo.jpg',
-    shortcut: '/images/logo.jpg',
-    apple: '/images/logo.jpg',
+    icon: '/images/logo-emblem.png',
+    shortcut: '/images/logo-emblem.png',
+    apple: '/images/logo-emblem.png',
   },
   description:
     'Premium anime-inspired streetwear fashion brand. Luxury 280-320 GSM oversized T-shirts, heavy fleece hoodies, tactical bomber jackets, and accessories designed for raw underground street culture.',
@@ -98,7 +98,7 @@ export default function RootLayout({
     '@type': 'OnlineStore',
     name: 'Amice Amarine',
     url: siteUrl,
-    logo: `${siteUrl}/images/logo.jpg`,
+    logo: `${siteUrl}/images/logo-horizontal.png`,
     description: 'Premium anime-inspired streetwear fashion brand. Oversized T-Shirts, Heavyweight Hoodies & Tactical Jackets.',
     telephone: '+91 91234 56789',
     email: 'syndicate@amiceamarine.com',
