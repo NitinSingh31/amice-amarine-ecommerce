@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Instagram, Send, ShieldCheck, Truck, RefreshCcw, CreditCard } from 'lucide-react';
+import { Logo } from '@/components/ui/Logo';
 
 export const Footer: React.FC = () => {
   return (
@@ -55,16 +56,8 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand Ethos */}
           <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="inline-block" aria-label="Amice Amarine Home">
-              <div className="relative h-11 w-48 -ml-1">
-                <Image
-                  src="/images/logo-horizontal.png"
-                  alt="Amice Amarine Logo"
-                  fill
-                  sizes="192px"
-                  className="object-contain object-left"
-                />
-              </div>
+            <Link href="/" className="inline-block py-1" aria-label="Amice Amarine Home">
+              <Logo size="lg" />
             </Link>
             <p className="text-xs leading-relaxed text-sage-600 max-w-sm">
               Effortless elegance, deeply rooted. We engineer luxury anime-inspired streetwear designed for uncompromising silhouettes crafted from heavyweight French Terry and bio-washed combed cotton.
