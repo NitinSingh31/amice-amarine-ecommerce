@@ -67,7 +67,10 @@ export default async function HomePage() {
           </div>
 
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-sage-900 font-serif leading-tight">
-            {settings?.heroBanner?.headline || 'AMICE AMARINE // LUXURY ANIME ATELIER'}
+            {(settings?.heroBanner?.headline || 'AMICE AMARINE')
+              .replace(/\s*\/\/\s*ANIME\s*X\s*STREETWEAR/gi, '')
+              .replace(/\s*\/\/\s*LUXURY\s*ANIME\s*ATELIER/gi, '')
+              .trim() || 'AMICE AMARINE'}
           </h1>
 
           <p className="max-w-2xl mx-auto text-sm sm:text-base md:text-lg text-sage-700 font-normal leading-relaxed">

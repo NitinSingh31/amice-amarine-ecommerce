@@ -43,7 +43,7 @@ export async function getPublicSettings() {
           isActive: true,
         },
         heroBanner: {
-          headline: 'AMICE AMARINE // ANIME X STREETWEAR',
+          headline: 'AMICE AMARINE',
           subheadline: 'Heavyweight 280 GSM Cotton. Raw Tokyo Cyberpunk Aesthetics. Oversized Precision.',
           ctaText: 'SHOP THE DROP',
           ctaLink: '/collections/all-products',

@@ -23,7 +23,7 @@ async function seedDatabase(): Promise<void> {
         textColor: '#fafafa',
       },
       heroBanner: {
-        headline: 'AMICE AMARINE // ANIME X STREETWEAR',
+        headline: 'AMICE AMARINE',
         subheadline: 'Heavyweight 280 GSM Cotton. Cyberpunk raw aesthetics. Engineered for the oversized lifestyle.',
         ctaText: 'EXPLORE THE DROP',
         ctaLink: '/collections/all-products',

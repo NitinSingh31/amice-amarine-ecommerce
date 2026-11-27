@@ -25,7 +25,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://amiceamarine.com';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'AMICE AMARINE // PREMIUM ANIME STREETWEAR',
+    default: 'AMICE AMARINE | Luxury Streetwear & Apparel',
     template: '%s | AMICE AMARINE',
   },
   icons: {
@@ -56,8 +56,8 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_IN',
     url: siteUrl,
-    siteName: 'AMICE AMARINE // ANIME STREETWEAR',
-    title: 'AMICE AMARINE // ANIME X LUXURY STREETWEAR',
+    siteName: 'AMICE AMARINE',
+    title: 'AMICE AMARINE | Luxury Streetwear & Apparel',
     description:
       'Engineered for the raw underground culture. Oversized anime silhouettes, luxury heavyweight fabrics, and limited cyber drops.',
     images: [
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AMICE AMARINE // ANIME X LUXURY STREETWEAR',
+    title: 'AMICE AMARINE | Luxury Streetwear & Apparel',
     description: 'Luxury anime streetwear drops. 280 GSM oversized tees & heavy hoodies.',
     images: ['https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=1200&auto=format&fit=crop'],
   },

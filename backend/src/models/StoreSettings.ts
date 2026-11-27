@@ -42,7 +42,7 @@ const StoreSettingsSchema = new Schema<IStoreSettings>(
       textColor: { type: String, default: '#ffffff' },
     },
     heroBanner: {
-      headline: { type: String, default: 'AMICE AMARINE // ANIME X STREETWEAR' },
+      headline: { type: String, default: 'AMICE AMARINE' },
       subheadline: { type: String, default: 'Heavyweight 280 GSM Cotton. Raw Tokyo Cyberpunk Aesthetics. Oversized Precision.' },
       ctaText: { type: String, default: 'SHOP THE DROP' },
       ctaLink: { type: String, default: '/collections/all-products' },
