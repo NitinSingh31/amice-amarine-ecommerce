@@ -9,8 +9,9 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
-import { ShoppingBag, Zap, Heart, MapPin, CheckCircle2 } from 'lucide-react';
+import { ShoppingBag, Zap, Heart, MapPin, CheckCircle2, Ruler } from 'lucide-react';
 import { ProductReviews } from './ProductReviews';
+import { SizeGuideModal } from './SizeGuideModal';
 
 interface ProductDetailsClientProps {
   product: Product;
@@ -24,6 +25,7 @@ export const ProductDetailsClient: React.FC<ProductDetailsClientProps> = ({ prod
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant>(product.variants?.[0] || ({} as any));
   const [quantity, setQuantity] = useState(1);
+  const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
   const [pincode, setPincode] = useState('');
   const [pincodeStatus, setPincodeStatus] = useState<{ checked: boolean; valid?: boolean; message?: string }>({
     checked: false,
@@ -170,12 +172,21 @@ export const ProductDetailsClient: React.FC<ProductDetailsClientProps> = ({ prod
             <span className="uppercase text-sage-700 font-medium">
               SELECT SIZE: <strong className="text-sage-900">{selectedVariant?.size}</strong>
             </span>
-            {selectedVariant?.stock <= 5 && selectedVariant?.stock > 0 && (
-              <span className="text-terracotta-600 font-semibold">
-                🔥 ONLY {selectedVariant.stock} LEFT IN STOCK!
-              </span>
-            )}
+            <button
+              type="button"
+              onClick={() => setIsSizeGuideOpen(true)}
+              className="text-xs font-semibold text-terracotta-600 hover:text-terracotta-700 underline underline-offset-4 flex items-center gap-1 transition-colors"
+            >
+              <Ruler className="w-3.5 h-3.5" />
+              <span>Size Guide & Fit Advisor</span>
+            </button>
           </div>
+
+          {selectedVariant?.stock <= 5 && selectedVariant?.stock > 0 && (
+            <div className="text-[11px] text-terracotta-600 font-semibold">
+              🔥 ONLY {selectedVariant.stock} LEFT IN STOCK FOR SIZE {selectedVariant.size}!
+            </div>
+          )}
 
           <div className="grid grid-cols-4 gap-2">
             {product.variants?.map((v) => {
@@ -345,6 +356,20 @@ export const ProductDetailsClient: React.FC<ProductDetailsClientProps> = ({ prod
 
       {/* Customer Reviews & Silhouette Ratings */}
       <ProductReviews productId={product._id} productName={product.name} />
+
+      {/* Interactive Size Guide & Fit Advisor Modal */}
+      <SizeGuideModal
+        isOpen={isSizeGuideOpen}
+        onClose={() => setIsSizeGuideOpen(false)}
+        categoryName={typeof product.category === 'object' ? product.category.name : 'T-Shirts'}
+        onSelectSize={(size) => {
+          const matching = product.variants?.find((v) => v.size.toUpperCase() === size.toUpperCase());
+          if (matching && matching.stock > 0) {
+            setSelectedVariant(matching);
+          }
+        }}
+        currentSize={selectedVariant?.size}
+      />
     </div>
   );
 };

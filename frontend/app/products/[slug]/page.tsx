@@ -31,7 +31,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <div>
         <Link
           href="/collections/all-products"
-          className="inline-flex items-center gap-1.5 text-xs font-mono text-zinc-500 hover:text-white transition-colors uppercase"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-sage-600 hover:text-terracotta-600 transition-colors uppercase tracking-wider"
         >
           <ArrowLeft className="w-3.5 h-3.5" /> BACK TO ALL PRODUCTS
         </Link>
@@ -42,21 +42,24 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
       {/* Related Products Rail */}
       {relatedProducts && relatedProducts.length > 0 && (
-        <div className="pt-12 border-t border-surface-border space-y-8">
+        <div className="pt-12 border-t border-sage-200/80 space-y-8">
           <div className="flex items-center justify-between">
             <div>
-              <span className="text-[10px] font-mono uppercase tracking-widest text-brand-crimson block">
+              <span className="text-[11px] font-serif uppercase tracking-widest text-terracotta-600 font-semibold block">
                 COMPLETE THE LOOK
               </span>
-              <h2 className="text-xl sm:text-2xl font-black uppercase tracking-wider text-white">
-                YOU MAY ALSO LIKE
+              <h2 className="text-xl sm:text-2xl font-serif font-bold uppercase tracking-tight text-sage-900 mt-0.5">
+                STYLED COMPLEMENTS
               </h2>
             </div>
-            <Link href="/collections/all-products" className="text-xs font-mono text-brand-crimson hover:underline">
+            <Link
+              href="/collections/all-products"
+              className="text-xs font-semibold uppercase tracking-wider text-terracotta-600 hover:text-terracotta-700 hover:underline"
+            >
               VIEW ALL →
             </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
             {relatedProducts.map((p: any) => (
               <ProductCard key={p._id} product={p} />
             ))}

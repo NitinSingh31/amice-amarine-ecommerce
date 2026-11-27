@@ -127,7 +127,38 @@ export async function getProductBySlug(slug: string) {
           { sku: 'AA-VD-TEE-XL', size: 'XL', color: 'Black', stock: 8 },
         ],
       },
-      relatedProducts: [],
+      relatedProducts: [
+        {
+          _id: 'rel-1',
+          name: 'SHADOW MONARCH // 420 GSM HOODIE',
+          slug: 'shadow-monarch-heavyweight-fleece-hoodie',
+          basePrice: 2499,
+          compareAtPrice: 4999,
+          discountPercentage: 50,
+          images: ['https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=800'],
+          category: { name: 'Hoodies', slug: 'hoodies' },
+        },
+        {
+          _id: 'rel-2',
+          name: 'BARREL CARGO // TACTICAL TRACKPANTS',
+          slug: 'barrel-cargo-tactical-trackpants',
+          basePrice: 1899,
+          compareAtPrice: 3499,
+          discountPercentage: 45,
+          images: ['https://images.unsplash.com/photo-1506629082955-511b1aa562c8?q=80&w=800'],
+          category: { name: 'Bottoms', slug: 'bottoms' },
+        },
+        {
+          _id: 'rel-3',
+          name: 'MODULAR CORDURA // CROSSBODY SLING',
+          slug: 'modular-cordura-crossbody-sling-bag',
+          basePrice: 899,
+          compareAtPrice: 1799,
+          discountPercentage: 50,
+          images: ['https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=800'],
+          category: { name: 'Accessories', slug: 'accessories' },
+        },
+      ],
     };
   }
 }
